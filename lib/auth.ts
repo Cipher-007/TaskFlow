@@ -2,18 +2,18 @@ import bcrypt from "bcrypt";
 import { SignJWT, jwtVerify } from "jose";
 import { db } from "./db";
 
-export function hashPassword(password: string) {
-  bcrypt.hash(password, 10);
+export async function hashPassword(password: string) {
+  return bcrypt.hash(password, 10);
 }
 
-export function comparePasswords(
+export async function comparePasswords(
   plainTextPassword: string,
   hashedPassword: string
 ) {
-  bcrypt.compare(plainTextPassword, hashedPassword);
+  return bcrypt.compare(plainTextPassword, hashedPassword);
 }
 
-export function createJSW(user) {
+export function createJWT(user) {
   const iat = Math.floor(Date.now() / 1000);
   const exp = iat + 60 * 60 * 24 * 7;
 
