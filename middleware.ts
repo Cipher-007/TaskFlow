@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 const PUBLIC_FILE = /\.(.*)$/;
 
-const verifyJWT = async (jwt) => {
+const verifyJWT = async (jwt: string) => {
   const { payload } = await jwtVerify(
     jwt,
-    new TextEncoder().encode(process.env.JWT_SECRET)
+    new TextEncoder().encode(process.env.JWT_SECRET),
   );
 
   return payload;
