@@ -46,10 +46,10 @@ const buttonClasses = cva(
       intent: "primary",
       size: "medium",
     },
-  }
+  },
 );
 
-const Button: FC<ButtonProps> = ({
+const ButtonC: FC<ButtonProps> = ({
   children,
   className,
   intent,
@@ -63,4 +63,4 @@ const Button: FC<ButtonProps> = ({
   );
 };
 
-export default Button;
+export default ButtonC;

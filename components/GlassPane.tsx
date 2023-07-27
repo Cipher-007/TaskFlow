@@ -10,8 +10,8 @@ export default function GlassPane({ children, className }: Props) {
   return (
     <div
       className={clsx(
-        "glass rounded-2xl border-solid border-2 border-gray-200",
-        className
+        "glass rounded-2xl border-2 border-solid border-gray-200",
+        className,
       )}
     >
       {children}
