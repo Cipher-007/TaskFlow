@@ -24,6 +24,7 @@ export function register(user) {
     url: "/api/register",
     method: "POST",
     body: user,
+    json: false,
   });
 }
 
@@ -32,5 +33,6 @@ export function signin(user) {
     url: "/api/signin",
     method: "POST",
     body: user,
+    json: false,
   });
 }

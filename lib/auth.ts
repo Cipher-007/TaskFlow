@@ -10,7 +10,7 @@ export async function comparePasswords(
   plainTextPassword: string,
   hashedPassword: string
 ) {
-  return bcrypt.compare(plainTextPassword, hashedPassword);
+  return await bcrypt.compare(plainTextPassword, hashedPassword);
 }
 
 export function createJWT(user) {
