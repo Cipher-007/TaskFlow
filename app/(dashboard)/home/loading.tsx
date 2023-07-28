@@ -1,8 +1,6 @@
-import Card from "@/components/Card";
 import GreetingsSkeleton from "@/components/GreetingsSkeleton";
 import ProjectCardSkeleton from "@/components/ProjectCardSkeleton";
 import TaksCardSkeleton from "@/components/TaksCardSkeleton";
-import TaskCard from "@/components/TaskCard";
 
 const projects = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
 
