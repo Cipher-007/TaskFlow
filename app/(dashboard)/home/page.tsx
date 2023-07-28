@@ -3,7 +3,6 @@ import GreetingsSkeleton from "@/components/GreetingsSkeleton";
 import NewProject from "@/components/NewProject";
 import ProjectCard from "@/components/ProjectCard";
 import TaskCard from "@/components/TaskCard";
-import { delay } from "@/lib/async";
 import { getUserFromCookie } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { RequestCookies } from "next/dist/compiled/@edge-runtime/cookies";
@@ -11,8 +10,14 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import { Suspense } from "react";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home",
+  description: "Home Page",
+};
+
 async function getData() {
-  await delay(2000);
   const user = await getUserFromCookie(cookies() as unknown as RequestCookies);
 
   const projects = await db.project.findMany({
