@@ -2,12 +2,9 @@ import { getUserFromCookie } from "@/lib/auth";
 import { cookies } from "next/headers";
 import ButtonC from "./Button";
 import Card from "./Card";
-import { delay } from "@/lib/async";
 import { RequestCookies } from "next/dist/compiled/@edge-runtime/cookies";
 
 async function getData() {
-  await delay(1000);
-
   return await getUserFromCookie(cookies() as unknown as RequestCookies);
 }
 
