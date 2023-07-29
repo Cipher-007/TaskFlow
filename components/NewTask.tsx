@@ -53,8 +53,6 @@ export default function NewTask() {
       projectId: pathname.split("/")[2],
     };
 
-    console.log(task);
-
     await createNewTask(task);
 
     closeModal();
@@ -103,7 +101,7 @@ export default function NewTask() {
                 </div>
                 <div className="flex flex-col space-y-1.5">
                   <Select
-                    onValueChange={(e) => setStatus(e)}
+                    onValueChange={(e) => setStatus(e as TASK_STATUS)}
                     defaultValue={TASK_STATUS.NOT_STARTED}
                   >
                     <SelectTrigger className="w-[180px]">
