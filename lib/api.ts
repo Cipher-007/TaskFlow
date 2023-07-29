@@ -1,23 +1,23 @@
-import { Project, TASK_STATUS, Task, User } from "@prisma/client";
+import { TASK_STATUS, User } from "@prisma/client";
 
-type Prj = {
+type Project = {
+  name: string;
+  description: string;
+  due: string;
+};
+
+type Task = {
   name: string;
   description: string;
   due: string;
   status: TASK_STATUS;
-  userId: number;
-};
-type Tsk = {
-  name: string;
-  description: string;
-  due: string;
   projectId: string;
 };
 
 type FetcherProps = {
   url: string;
   method: string;
-  body: Partial<User> | Partial<Project> | Prj | Tsk;
+  body: Partial<User> | Project | Task;
   json?: boolean;
 };
 
@@ -60,7 +60,7 @@ export function signin(user: Partial<User>) {
   });
 }
 
-export async function createNewProject(project: Prj) {
+export async function createNewProject(project: Project) {
   return fetcher({
     url: "/api/projects",
     method: "POST",
@@ -69,7 +69,7 @@ export async function createNewProject(project: Prj) {
   });
 }
 
-export async function createNewTask(task: Tsk) {
+export async function createNewTask(task: Task) {
   return fetcher({
     url: "/api/tasks",
     method: "POST",
