@@ -1,5 +1,6 @@
 import { validateJWT } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { TASK_STATUS } from "@prisma/client";
 import { cookies } from "next/headers";
 
 export async function POST(req: Request) {
@@ -8,6 +9,7 @@ export async function POST(req: Request) {
     description: string;
     due: string;
     projectId: string;
+    status: TASK_STATUS;
   } = await req.json();
 
   const cookieStore = cookies();
@@ -26,6 +28,7 @@ export async function POST(req: Request) {
       description: data.description,
       due: data.due,
       project: { connect: { id: data.projectId } },
+      status: data.status,
       owner: { connect: { id: user.id } },
     },
   });
