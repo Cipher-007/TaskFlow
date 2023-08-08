@@ -1,7 +1,8 @@
 import { validateJWT } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { TASK_STATUS } from "@prisma/client";
+import { Prisma, TASK_STATUS } from "@prisma/client";
 import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   const data: {
@@ -17,7 +18,9 @@ export async function POST(req: Request) {
   const c = cookieStore.get(process.env.COOKIE_NAME! as string);
 
   if (!c) {
-    return new Response("Unauthorized");
+    return new Response("Unauthorized", {
+      status: 401,
+    });
   }
 
   const user = await validateJWT(c.value);
@@ -36,4 +39,31 @@ export async function POST(req: Request) {
   return new Response("Task created", {
     status: 201,
   });
+}
+
+export async function PUT(req: Request) {
+  const data: Prisma.TaskUpdateInput = await req.json();
+
+  const cookieStore = cookies();
+
+  const c = cookieStore.get(process.env.COOKIE_NAME! as string);
+
+  if (!c) {
+    return new Response("Unauthorized", {
+      status: 401,
+    });
+  }
+
+  const user = await validateJWT(c!.value);
+
+  const { id, ...body } = data;
+
+  await db.task.update({
+    where: {
+      id: id as string,
+    },
+    data: body,
+  });
+
+  return NextResponse.json({ message: "Task updated" }, { status: 200 });
 }
