@@ -16,7 +16,7 @@ export const metadata = {
 
 export default function Signin() {
   return (
-    <Card className="w-[500px]">
+    <Card className="w-[400px]">
       <CardHeader>
         <CardTitle>Sign In</CardTitle>
         <CardDescription>Sign in your account in one-click</CardDescription>
