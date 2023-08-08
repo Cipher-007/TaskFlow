@@ -33,9 +33,5 @@ export async function POST(req: Request) {
         }),
       },
     });
-  } else {
-    return new Response("Invalid login", {
-      status: 401,
-    });
   }
 }
