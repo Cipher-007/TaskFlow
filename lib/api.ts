@@ -1,4 +1,5 @@
-import { TASK_STATUS, User } from "@prisma/client";
+import { ProfileFormValues } from "@/components/ProfileForm";
+import { Prisma, User } from "@prisma/client";
 
 type Project = {
   name: string;
@@ -6,23 +7,18 @@ type Project = {
   due: string;
 };
 
-type Task = {
-  name: string;
-  description: string;
-  due: string;
-  status: TASK_STATUS;
-  projectId: string;
-};
-
 type FetcherProps = {
   url: string;
   method: string;
-  body: Partial<User> | Project | Task;
-  json?: boolean;
+  body:
+    | Partial<User>
+    | Project
+    | Prisma.TaskCreateInput
+    | Prisma.TaskUpdateInput;
 };
 
-async function fetcher({ url, method, body, json = true }: FetcherProps) {
-  const res = await fetch(url, {
+async function fetcher({ url, method, body }: FetcherProps) {
+  return await fetch(url, {
     method,
     headers: {
       Accept: "application/json",
@@ -30,16 +26,6 @@ async function fetcher({ url, method, body, json = true }: FetcherProps) {
     },
     ...(body && { body: JSON.stringify(body) }),
   });
-
-  if (!res.ok) {
-    throw new Error("API error");
-  }
-
-  if (json) {
-    const data = await res.json();
-
-    return data;
-  }
 }
 
 export function register(user: Partial<User>) {
@@ -47,7 +33,6 @@ export function register(user: Partial<User>) {
     url: "/api/register",
     method: "POST",
     body: user,
-    json: false,
   });
 }
 
@@ -56,7 +41,6 @@ export function signin(user: Partial<User>) {
     url: "/api/signin",
     method: "POST",
     body: user,
-    json: false,
   });
 }
 
@@ -65,15 +49,29 @@ export async function createNewProject(project: Project) {
     url: "/api/projects",
     method: "POST",
     body: project,
-    json: false,
   });
 }
 
-export async function createNewTask(task: Task) {
+export async function createNewTask(task: Prisma.TaskCreateInput) {
   return fetcher({
     url: "/api/tasks",
     method: "POST",
     body: task,
-    json: false,
+  });
+}
+
+export async function updateTask(task: Prisma.TaskUpdateInput) {
+  return fetcher({
+    url: "/api/tasks",
+    method: "PUT",
+    body: task,
+  });
+}
+
+export async function updateProfile(user: Partial<ProfileFormValues>) {
+  return fetcher({
+    url: "/api/profile",
+    method: "PUT",
+    body: user,
   });
 }
