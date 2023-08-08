@@ -2,6 +2,7 @@ import GlassPane from "@/components/GlassPane";
 import React from "react";
 import "@/styles/globals.css";
 import Sidebar from "@/components/Sidebar";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function DashboardRootlayout({
   children,
@@ -17,6 +18,7 @@ export default function DashboardRootlayout({
           {children}
         </GlassPane>
         <div id="modal"></div>
+        <Toaster />
       </body>
     </html>
   );
