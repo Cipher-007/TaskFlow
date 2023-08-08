@@ -1,6 +1,6 @@
 import GreetingsSkeleton from "@/components/GreetingsSkeleton";
-import ProjectCardSkeleton from "@/components/ProjectCardSkeleton";
-import TaksCardSkeleton from "@/components/TaksCardSkeleton";
+import ProjectCardSkeleton from "@/components/Project/ProjectCardSkeleton";
+import TasksCardSkeleton from "@/components/Task/TasksCardSkeleton";
 
 const projects = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
 
@@ -20,7 +20,7 @@ export default function HomePageLoader() {
         </div>
         <div className="flex-2 mt-6 flex w-full grow">
           <div className="w-full pb-4">
-            <TaksCardSkeleton />
+            <TasksCardSkeleton />
           </div>
         </div>
       </div>
