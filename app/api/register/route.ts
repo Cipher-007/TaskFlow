@@ -12,14 +12,21 @@ type User = {
 export async function POST(request: Request) {
   const { email, password, firstName, lastName }: User = await request.json();
 
-  const user = await db.user.create({
-    data: {
-      email: email,
-      password: await hashPassword(password),
-      firstName: firstName,
-      lastName: lastName,
-    },
-  });
+  let user;
+  try {
+    user = await db.user.create({
+      data: {
+        email: email,
+        password: await hashPassword(password),
+        firstName: firstName,
+        lastName: lastName,
+      },
+    });
+  } catch (error) {
+    return new Response(`${error}`, {
+      status: 409,
+    });
+  }
 
   const jwt = await createJWT(user);
 
