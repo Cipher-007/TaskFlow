@@ -63,7 +63,7 @@ export default async function TaskCards({ title, tasks }: TaskCardProps) {
       </CardContent>
       {title && (
         <CardFooter className="justify-center">
-          <TaskForm title="Create Task" />
+          <TaskForm mode="create" />
         </CardFooter>
       )}
     </Card>
