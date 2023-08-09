@@ -78,7 +78,6 @@ export default function RegisterForm() {
         title: "Account created.",
         description: "We've created your account for you.",
       });
-      console.log(data);
     }
 
     if (res.status === 409) {

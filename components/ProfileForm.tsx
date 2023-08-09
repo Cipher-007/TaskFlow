@@ -93,7 +93,6 @@ export default function ProfileForm({ data }: { data: User }) {
 
   async function onSubmit(userData: ProfileFormValues) {
     const { confirm_password, ...body } = userData;
-    console.log(body);
     const res = await updateProfile(body);
 
     if (res.ok) {
