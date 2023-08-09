@@ -15,11 +15,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { createNewTask, updateTask } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TASK_STATUS, Task } from "@prisma/client";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import {
@@ -38,13 +41,10 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
-import { updateTask } from "@/lib/api";
 import { useToast } from "../ui/use-toast";
-import { useState } from "react";
 
 type TaskForm = {
-  title: string;
-  variant?: "outline";
+  mode: "create" | "edit";
   task?: Task;
 };
 
@@ -73,10 +73,25 @@ const taskFormSchema = z.object({
   ]),
 });
 
+const EditTaskForm = {
+  title: "Edit Task",
+  toastDescription: "Task updated successfully.",
+};
+
+const CreateTaskForm = {
+  title: "Create Task",
+  toastDescription: "Task created successfully.",
+};
+
 type TaskFormValue = z.infer<typeof taskFormSchema>;
 
-export default function TaskForm({ title, variant, task }: TaskForm) {
-  let defaultValues: Partial<TaskFormValue> = {};
+export default function TaskForm({ mode, task }: TaskForm) {
+  let content = mode === "create" ? CreateTaskForm : EditTaskForm;
+
+  let defaultValues: Partial<TaskFormValue> = {
+    name: "",
+    description: "",
+  };
   if (task && task.due && task.status) {
     defaultValues = {
       name: task?.name,
@@ -86,7 +101,10 @@ export default function TaskForm({ title, variant, task }: TaskForm) {
     };
   }
 
-  const [canSave, setCanSave] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
 
   const { toast } = useToast();
 
@@ -97,27 +115,47 @@ export default function TaskForm({ title, variant, task }: TaskForm) {
   });
 
   async function onSubmit(data: TaskFormValue) {
-    const d = { ...data, due: data.due?.toISOString(), id: task?.id };
-    const res = await updateTask(d);
-    setCanSave(true);
+    setIsDisabled(true);
+
+    let res;
+    let body;
+
+    if (mode === "create") {
+      body = {
+        ...data,
+        due: data.due?.toISOString(),
+        projectId: pathname.split("/")[2],
+      };
+      res = await createNewTask(body);
+    } else {
+      body = { ...data, due: data.due?.toISOString(), id: task?.id };
+      res = await updateTask(body);
+    }
 
     if (res.ok) {
       toast({
-        variant: "default",
-        description: "Task updated successfully.",
+        description: content.toastDescription,
       });
-      setCanSave(false);
+      setOpen(false);
+      form.resetField("name");
+      form.resetField("description");
+      form.resetField("due");
+      form.resetField("status");
+      router.refresh();
     }
+    setIsDisabled(false);
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={variant}>{title}</Button>
+        <Button variant={mode === "create" ? "default" : "outline"}>
+          {content.title}
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="items-center">
-          <DialogTitle>{title}</DialogTitle>
+          <DialogTitle>{content.title}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -130,7 +168,7 @@ export default function TaskForm({ title, variant, task }: TaskForm) {
                     <FormLabel className="text-right">Name</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="John"
+                        placeholder="Task 0"
                         {...field}
                         className="col-span-3"
                       />
@@ -147,7 +185,7 @@ export default function TaskForm({ title, variant, task }: TaskForm) {
                     <FormLabel className="text-right">Description</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="John"
+                        placeholder="Task 0 description"
                         {...field}
                         className="col-span-3"
                       />
@@ -224,7 +262,7 @@ export default function TaskForm({ title, variant, task }: TaskForm) {
               />
             </div>
             <DialogFooter>
-              <Button disabled={canSave} type="submit">
+              <Button disabled={isDisabled} type="submit">
                 Save changes
               </Button>
             </DialogFooter>
