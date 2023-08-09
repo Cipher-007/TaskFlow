@@ -61,7 +61,7 @@ export default function TaskC({ task }: Props) {
         )}
       </CardContent>
       <CardFooter className="flex basis-1/3 justify-end gap-4 py-6 pr-14">
-        <TaskForm title="Edit Task" variant="outline" task={task} />
+        <TaskForm mode="edit" task={task} />
         <Button variant="destructive" onClick={deleteHandler}>
           Delete
         </Button>
