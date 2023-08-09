@@ -86,7 +86,7 @@ export default function TaskForm({ title, variant, task }: TaskForm) {
     };
   }
 
-  const [canSave, setCanSave] = useState(true);
+  const [canSave, setCanSave] = useState(false);
 
   const { toast } = useToast();
 
@@ -99,16 +99,15 @@ export default function TaskForm({ title, variant, task }: TaskForm) {
   async function onSubmit(data: TaskFormValue) {
     const d = { ...data, due: data.due?.toISOString(), id: task?.id };
     const res = await updateTask(d);
-    setCanSave(false);
+    setCanSave(true);
 
     if (res.ok) {
       toast({
         variant: "default",
         description: "Task updated successfully.",
       });
-      setCanSave(true);
+      setCanSave(false);
     }
-    console.log(await res.json());
   }
 
   return (
