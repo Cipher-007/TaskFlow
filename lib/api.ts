@@ -1,5 +1,5 @@
 import { ProfileFormValues } from "@/components/ProfileForm";
-import { Prisma, User } from "@prisma/client";
+import { Prisma, TASK_STATUS, User } from "@prisma/client";
 
 type Project = {
   name: string;
@@ -7,14 +7,18 @@ type Project = {
   due: string;
 };
 
+type Task = {
+  name: string;
+  description: string;
+  due: string;
+  projectId: string;
+  status: TASK_STATUS;
+};
+
 type FetcherProps = {
   url: string;
   method: string;
-  body:
-    | Partial<User>
-    | Project
-    | Prisma.TaskCreateInput
-    | Prisma.TaskUpdateInput;
+  body: Partial<User> | Project | Task | Prisma.TaskUpdateInput;
 };
 
 async function fetcher({ url, method, body }: FetcherProps) {
@@ -52,7 +56,7 @@ export async function createNewProject(project: Project) {
   });
 }
 
-export async function createNewTask(task: Prisma.TaskCreateInput) {
+export async function createNewTask(task: Task) {
   return fetcher({
     url: "/api/tasks",
     method: "POST",
