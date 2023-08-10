@@ -12,19 +12,6 @@ const verifyJWT = async (jwt: string) => {
 };
 
 export default async function middleware(req: NextRequest, res: NextResponse) {
-  const { pathname } = req.nextUrl;
-
-  if (
-    pathname.startsWith("/_next") ||
-    pathname.startsWith("/api") ||
-    pathname.startsWith("/static") ||
-    pathname.startsWith("/signin") ||
-    pathname.startsWith("/register") ||
-    PUBLIC_FILE.test(pathname)
-  ) {
-    return NextResponse.next();
-  }
-
   const jwt = req.cookies.get(process.env.COOKIE_NAME!);
 
   if (!jwt) {
@@ -41,3 +28,14 @@ export default async function middleware(req: NextRequest, res: NextResponse) {
     return NextResponse.redirect(req.nextUrl);
   }
 }
+
+export const config = {
+  matcher: [
+    "/calendar",
+    "/profile",
+    "/settings",
+    "/home",
+    "/project/:path*",
+    "/api/:path*",
+  ],
+};
