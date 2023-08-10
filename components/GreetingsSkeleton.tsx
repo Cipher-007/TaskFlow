@@ -1,17 +1,23 @@
-import Card from "./Card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
 
 export default function GreetingsSkeleton() {
   return (
-    <Card className="w-full py-14">
-      <div className="animate-pulse">
-        <div className="mb-4">
-          <div className="mb-4 h-9 w-[15%] rounded bg-gray-300"></div>
-          <div className="h-6 w-[25%] bg-gray-300"></div>
-        </div>
-        <div className="mb-4">
-          <div className="h-14 w-[15%] rounded-3xl bg-gray-300"></div>
-        </div>
-      </div>
+    <Card className="w-full">
+      <CardHeader className="animate-pulse">
+        <CardTitle className="h-6 w-40 rounded bg-gray-300"></CardTitle>
+      </CardHeader>
+      <CardContent className="animate-pulse">
+        <div className="h-7 w-80 rounded bg-gray-300" />
+      </CardContent>
+      <CardFooter className="animate-pulse">
+        <div className="h-11 w-64 rounded-3xl bg-gray-300" />
+      </CardFooter>
     </Card>
   );
 }

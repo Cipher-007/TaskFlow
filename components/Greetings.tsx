@@ -18,7 +18,7 @@ export default async function Greetings() {
   const user = await getData();
 
   return (
-    <Card className="relative w-full rounded-2xl">
+    <Card className="relative w-full">
       <CardHeader>
         <CardTitle>Hello, {user!.firstName}!</CardTitle>
       </CardHeader>
