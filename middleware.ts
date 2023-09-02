@@ -36,6 +36,8 @@ export const config = {
     "/settings",
     "/home",
     "/project/:path*",
-    "/api/:path*",
+    "/api/profile",
+    "/api/projects",
+    "/api/tasks",
   ],
 };
