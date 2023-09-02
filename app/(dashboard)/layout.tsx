@@ -10,16 +10,13 @@ export default function DashboardRootlayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <head />
-      <body className="candy-mesh h-screen w-screen p-4">
-        <GlassPane className="flex h-full w-full items-center">
-          <Sidebar />
-          {children}
-        </GlassPane>
-        <div id="modal"></div>
-        <Toaster />
-      </body>
-    </html>
+    <div className="candy-mesh h-screen w-screen p-4">
+      <GlassPane className="flex h-full w-full items-center">
+        <Sidebar />
+        {children}
+      </GlassPane>
+      <div id="modal"></div>
+      <Toaster />
+    </div>
   );
 }

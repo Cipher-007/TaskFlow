@@ -9,14 +9,11 @@ export default function AuthRootlayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <head />
-      <body className="rainbow-mesh h-screen w-screen p-6">
+      <div className="rainbow-mesh h-screen w-screen p-6">
         <GlassPane className="flex h-full w-full items-center justify-center">
           {children}
         </GlassPane>
         <Toaster />
-      </body>
-    </html>
+      </div>
   );
 }
