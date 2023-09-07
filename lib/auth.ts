@@ -1,9 +1,8 @@
 import bcrypt from "bcrypt";
 import { SignJWT, jwtVerify } from "jose";
 import { db } from "./db";
-import { User } from "@prisma/client";
-import { RequestCookies } from "next/dist/compiled/@edge-runtime/cookies";
-
+import type { User } from "@prisma/client";
+import type { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 export async function hashPassword(password: string) {
   return bcrypt.hash(password, 10);
 }
@@ -36,7 +35,7 @@ export async function validateJWT(jwt: string) {
   return payload.payload as Partial<User>;
 }
 
-export async function getUserFromCookie(cookies: RequestCookies) {
+export async function getUserFromCookie(cookies: ReadonlyRequestCookies) {
   const jwt = cookies.get(process.env.COOKIE_NAME as string);
 
   const { id } = await validateJWT(jwt?.value as string);
