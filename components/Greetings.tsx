@@ -1,6 +1,5 @@
 import { getUserFromCookie } from "@/lib/auth";
 import { cookies } from "next/headers";
-import { RequestCookies } from "next/dist/compiled/@edge-runtime/cookies";
 import {
   Card,
   CardContent,
@@ -11,7 +10,7 @@ import {
 import { Button } from "./ui/button";
 
 async function getData() {
-  return await getUserFromCookie(cookies() as unknown as RequestCookies);
+  return await getUserFromCookie(cookies());
 }
 
 export default async function Greetings() {
