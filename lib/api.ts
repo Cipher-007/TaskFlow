@@ -1,24 +1,16 @@
 import { ProfileFormValues } from "@/components/ProfileForm";
-import { Prisma, TASK_STATUS, User } from "@prisma/client";
+import type { Project, User, Task } from "@prisma/client";
 
-type Project = {
-  name: string;
+type createNewProjectProps = {
+  title: string;
   description: string;
   due: string;
-};
-
-type Task = {
-  name: string;
-  description: string;
-  due: string;
-  projectId: string;
-  status: TASK_STATUS;
 };
 
 type FetcherProps = {
   url: string;
   method: string;
-  body: Partial<User> | Project | Task | Prisma.TaskUpdateInput;
+  body: Partial<User> | createNewProjectProps | Partial<Task>;
 };
 
 async function fetcher({ url, method, body }: FetcherProps) {
@@ -48,15 +40,15 @@ export function signin(user: Partial<User>) {
   });
 }
 
-export async function createNewProject(project: Project) {
+export async function createNewProject(project: Partial<Project>) {
   return fetcher({
     url: "/api/projects",
     method: "POST",
-    body: project,
+    body: { ...project, due: project.due?.toISOString() },
   });
 }
 
-export async function createNewTask(task: Task) {
+export async function createNewTask(task: Partial<Task>) {
   return fetcher({
     url: "/api/tasks",
     method: "POST",
@@ -64,7 +56,7 @@ export async function createNewTask(task: Task) {
   });
 }
 
-export async function updateTask(task: Prisma.TaskUpdateInput) {
+export async function updateTask(task: Partial<Task>) {
   return fetcher({
     url: "/api/tasks",
     method: "PUT",
