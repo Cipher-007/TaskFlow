@@ -1,8 +1,12 @@
-import GlassPane from "@/components/GlassPane";
 import { Button } from "@/components/ui/button";
 import { CheckSquare, FolderKanban, LayoutDashboard } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+
+export const metadata = {
+  title: "Projectverse",
+  description: "One app to replace them all.",
+};
 
 export default function Home() {
   return (
@@ -11,7 +15,7 @@ export default function Home() {
         <Link href="/home">
           <div className="absolute left-0 ml-8 flex gap-4 text-xl">
             <FolderKanban />
-            Project Manager
+            Projectverse
           </div>
         </Link>
         <div className="absolute right-0 mr-8 flex gap-8">
@@ -23,7 +27,7 @@ export default function Home() {
           </Link>
         </div>
       </nav>
-      <div className="mt-20 flex flex-row">
+      <div className="-mt-16 flex h-full flex-row items-center">
         <div className="my-auto flex basis-1/2 flex-col items-center">
           <p className="mb-4 text-3xl">One app to replace them all.</p>
           <div>
