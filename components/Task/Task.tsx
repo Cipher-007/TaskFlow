@@ -1,6 +1,8 @@
 "use client";
-import { Task } from "@prisma/client";
-import React from "react";
+import { updateTask } from "@/lib/api";
+import { formatDate } from "@/lib/utils";
+import type { Task } from "@prisma/client";
+import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import {
   Card,
@@ -10,10 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import TaskForm from "./TaskForm";
-import { Badge } from "../ui/badge";
-import { updateTask } from "@/lib/api";
 import { useToast } from "../ui/use-toast";
+import TaskForm from "./TaskForm";
 
 type Props = {
   task: Task;
@@ -49,11 +49,7 @@ export default function TaskC({ task }: Props) {
             <div className="pb-2">
               <span className="pr-2">Due:</span>
               <span className="pr-2">
-                {task.due?.toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}
+                {task.due ? formatDate(task.due) : ""}
               </span>
             </div>
             <Badge className="text-sm">{task.status}</Badge>
