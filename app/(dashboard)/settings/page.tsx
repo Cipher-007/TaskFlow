@@ -2,7 +2,6 @@ import ProfileForm from "@/components/ProfileForm";
 import { getUserFromCookie } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { Metadata } from "next";
-import { RequestCookies } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
@@ -11,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 async function getData() {
-  const user = await getUserFromCookie(cookies() as unknown as RequestCookies);
+  const user = await getUserFromCookie(cookies());
   return await db.user.findUnique({
     where: {
       id: user?.id,
