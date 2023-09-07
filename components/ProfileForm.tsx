@@ -1,9 +1,10 @@
 "use client";
 
+import { updateProfile } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { User } from "@prisma/client";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
-
+import { z } from "zod";
 import { Button } from "./ui/button";
 import { Card, CardHeader, CardTitle } from "./ui/card";
 import {
@@ -17,8 +18,6 @@ import {
 import { Input } from "./ui/input";
 import { Separator } from "./ui/separator";
 import { useToast } from "./ui/use-toast";
-import { User } from "@prisma/client";
-import { updateProfile } from "@/lib/api";
 
 const profileFormSchema = z
   .object({
