@@ -2,7 +2,6 @@ import TasksCards from "@/components/Task/TaskCards";
 import { getUserFromCookie } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { Metadata } from "next";
-import { RequestCookies } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
 
 type ProjectPageParams = {
@@ -17,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 async function getData(id: string) {
-  const user = await getUserFromCookie(cookies() as unknown as RequestCookies);
+  const user = await getUserFromCookie(cookies());
   return await db.project.findFirst({
     where: { id, ownerId: user?.id },
     include: {
