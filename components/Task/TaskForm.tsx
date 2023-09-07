@@ -1,30 +1,15 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { createNewTask, updateTask } from "@/lib/api";
-import { cn } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TASK_STATUS, Task } from "@prisma/client";
-import { format } from "date-fns";
+import type { Task } from "@prisma/client";
 import { Calendar as CalendarIcon } from "lucide-react";
+import dynamic from "next/dynamic";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { z } from "zod";
 import {
   Form,
   FormControl,
@@ -33,15 +18,63 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
 import { Textarea } from "../ui/textarea";
 import { useToast } from "../ui/use-toast";
+
+const Calendar = dynamic(() => import("@/components/ui/calendar"));
+
+const Select = dynamic(() =>
+  import("@/components/ui/select").then((mod) => mod.Select),
+);
+
+const SelectContent = dynamic(() =>
+  import("@/components/ui/select").then((mod) => mod.SelectContent),
+);
+const SelectItem = dynamic(() =>
+  import("@/components/ui/select").then((mod) => mod.SelectItem),
+);
+const SelectTrigger = dynamic(() =>
+  import("@/components/ui/select").then((mod) => mod.SelectTrigger),
+);
+const SelectValue = dynamic(() =>
+  import("@/components/ui/select").then((mod) => mod.SelectValue),
+);
+
+const Popover = dynamic(() =>
+  import("@/components/ui/popover").then((mod) => mod.Popover),
+);
+
+const PopoverContent = dynamic(() =>
+  import("@/components/ui/popover").then((mod) => mod.PopoverContent),
+);
+
+const PopoverTrigger = dynamic(() =>
+  import("@/components/ui/popover").then((mod) => mod.PopoverTrigger),
+);
+
+const Dialog = dynamic(() =>
+  import("@/components/ui/dialog").then((mod) => mod.Dialog),
+);
+
+const DialogContent = dynamic(() =>
+  import("@/components/ui/dialog").then((mod) => mod.DialogContent),
+);
+
+const DialogFooter = dynamic(() =>
+  import("@/components/ui/dialog").then((mod) => mod.DialogFooter),
+);
+
+const DialogHeader = dynamic(() =>
+  import("@/components/ui/dialog").then((mod) => mod.DialogHeader),
+);
+
+const DialogTitle = dynamic(() =>
+  import("@/components/ui/dialog").then((mod) => mod.DialogTitle),
+);
+
+const DialogTrigger = dynamic(() =>
+  import("@/components/ui/dialog").then((mod) => mod.DialogTrigger),
+);
 
 type TaskForm = {
   mode: "create" | "edit";
@@ -66,11 +99,7 @@ const taskFormSchema = z.object({
       message: "Task description must not be longer than 255 characters.",
     }),
   due: z.coerce.date(),
-  status: z.enum([
-    TASK_STATUS.NOT_STARTED,
-    TASK_STATUS.STARTED,
-    TASK_STATUS.COMPLETED,
-  ]),
+  status: z.enum(["NOT_STARTED", "STARTED", "COMPLETED"]),
 });
 
 const EditTaskForm = {
@@ -97,7 +126,7 @@ export default function TaskForm({ mode, task }: TaskForm) {
       name: task?.name,
       description: task?.description,
       due: task?.due,
-      status: task?.status,
+      status: task.status,
     };
   }
 
@@ -126,10 +155,24 @@ export default function TaskForm({ mode, task }: TaskForm) {
         due: data.due?.toISOString(),
         projectId: pathname.split("/")[2],
       };
-      res = await createNewTask(body);
+      res = await fetch("/api/tasks", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
     } else {
       body = { ...data, due: data.due?.toISOString(), id: task?.id };
-      res = await updateTask(body);
+      res = await fetch("/api/tasks", {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
     }
 
     if (res.ok) {
@@ -173,7 +216,7 @@ export default function TaskForm({ mode, task }: TaskForm) {
                         className="col-span-3"
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="col-span-3 col-start-2" />
                   </FormItem>
                 )}
               />
@@ -190,7 +233,7 @@ export default function TaskForm({ mode, task }: TaskForm) {
                         className="col-span-3"
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="col-span-3 col-start-2" />
                   </FormItem>
                 )}
               />
@@ -213,7 +256,7 @@ export default function TaskForm({ mode, task }: TaskForm) {
                             >
                               <CalendarIcon className="mr-2 h-4 w-4" />
                               {field.value ? (
-                                format(field.value, "PPP")
+                                formatDate(field.value)
                               ) : (
                                 <span>Pick a date</span>
                               )}
@@ -231,7 +274,7 @@ export default function TaskForm({ mode, task }: TaskForm) {
                         </PopoverContent>
                       </Popover>
                     </div>
-                    <FormMessage />
+                    <FormMessage className="col-span-3 col-start-2" />
                   </FormItem>
                 )}
               />
