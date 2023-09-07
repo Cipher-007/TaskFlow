@@ -1,5 +1,5 @@
-import { Prisma, TASK_STATUS } from "@prisma/client";
-import clsx from "clsx";
+import { formatDate } from "@/lib/utils";
+import type { Project, Task } from "@prisma/client";
 import {
   Card,
   CardContent,
@@ -8,28 +8,17 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-
-const projectWithTasks = Prisma.validator<Prisma.ProjectArgs>()({
-  include: { tasks: true },
-});
-
-type ProjectWithTasks = Prisma.ProjectGetPayload<typeof projectWithTasks>;
-
-const formatDate = (date: Date) =>
-  new Date(date).toLocaleDateString("en-us", {
-    weekday: "long",
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
+type ProjectCardProps = Project & {
+  tasks: Task[];
+};
 
 export default function ProjectCard({
   project,
 }: {
-  project: ProjectWithTasks;
+  project: ProjectCardProps;
 }) {
   const completedCount = project.tasks.filter(
-    (t) => t.status === TASK_STATUS.COMPLETED,
+    (t) => t.status === "COMPLETED",
   ).length;
   const progress = Math.ceil((completedCount / project.tasks.length) * 100);
   return (
