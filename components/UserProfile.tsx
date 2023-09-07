@@ -8,14 +8,13 @@ import {
 } from "@/components/ui/card";
 import { getUserFromCookie } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { RequestCookies } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
-import { Separator } from "./ui/separator";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import Logout from "./Logout";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Separator } from "./ui/separator";
 
 export default async function UserProfile() {
-  const user = await getUserFromCookie(cookies() as unknown as RequestCookies);
+  const user = await getUserFromCookie(cookies());
 
   if (!user) {
     console.log("User Not Found");
