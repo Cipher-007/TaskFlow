@@ -1,7 +1,7 @@
 import { getUserFromCookie } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { TASK_STATUS, Task } from "@prisma/client";
-import { RequestCookies } from "next/dist/compiled/@edge-runtime/cookies";
+import { TASK_STATUS } from "@/lib/types";
+import type { Task } from "@prisma/client";
 import { cookies } from "next/headers";
 import {
   Card,
@@ -10,9 +10,9 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { Separator } from "../ui/separator";
 import TaskC from "./Task";
 import TaskForm from "./TaskForm";
-import { Separator } from "../ui/separator";
 
 type TaskCardProps = {
   title?: string;
@@ -20,7 +20,7 @@ type TaskCardProps = {
 };
 
 async function getData() {
-  const user = await getUserFromCookie(cookies() as unknown as RequestCookies);
+  const user = await getUserFromCookie(cookies());
   return await db.task.findMany({
     where: {
       ownerId: user?.id,
