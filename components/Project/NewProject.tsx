@@ -1,29 +1,15 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { createNewProject } from "@/lib/api";
-import { cn } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
 import { Calendar as CalendarIcon, Plus } from "lucide-react";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
+import { z } from "zod";
 import {
   Form,
   FormControl,
@@ -34,7 +20,48 @@ import {
 } from "../ui/form";
 import { Textarea } from "../ui/textarea";
 import { useToast } from "../ui/use-toast";
-import { useRouter } from "next/navigation";
+
+const Calendar = dynamic(() => import("@/components/ui/calendar"));
+
+const Popover = dynamic(() =>
+  import("@/components/ui/popover").then((mod) => mod.Popover),
+);
+
+const PopoverContent = dynamic(() =>
+  import("@/components/ui/popover").then((mod) => mod.PopoverContent),
+);
+
+const PopoverTrigger = dynamic(() =>
+  import("@/components/ui/popover").then((mod) => mod.PopoverTrigger),
+);
+
+const Dialog = dynamic(() =>
+  import("@/components/ui/dialog").then((mod) => mod.Dialog),
+);
+
+const DialogContent = dynamic(() =>
+  import("@/components/ui/dialog").then((mod) => mod.DialogContent),
+);
+
+const DialogFooter = dynamic(() =>
+  import("@/components/ui/dialog").then((mod) => mod.DialogFooter),
+);
+
+const DialogHeader = dynamic(() =>
+  import("@/components/ui/dialog").then((mod) => mod.DialogHeader),
+);
+
+const DialogTitle = dynamic(() =>
+  import("@/components/ui/dialog").then((mod) => mod.DialogTitle),
+);
+
+const DialogTrigger = dynamic(() =>
+  import("@/components/ui/dialog").then((mod) => mod.DialogTrigger),
+);
+
+const DialogDescription = dynamic(() =>
+  import("@/components/ui/dialog").then((mod) => mod.DialogDescription),
+);
 
 const projectFormSchema = z.object({
   name: z
@@ -79,9 +106,8 @@ export default function NewProject() {
 
   async function onSubmit(data: ProjectFormValue) {
     setIsDisabled(true);
-    const body = { ...data, due: data.due.toISOString() };
 
-    const res = await createNewProject(body);
+    const res = await createNewProject(data);
 
     if (res.ok) {
       toast({
@@ -164,7 +190,7 @@ export default function NewProject() {
                               >
                                 <CalendarIcon className="mr-2 h-4 w-4" />
                                 {field.value ? (
-                                  format(field.value, "PPP")
+                                  formatDate(field.value)
                                 ) : (
                                   <span>Pick due date</span>
                                 )}
