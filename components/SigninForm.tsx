@@ -2,8 +2,9 @@
 import { Button } from "@/components/ui/button";
 import { signin } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { z } from "zod";
 import {
   Form,
   FormControl,
@@ -14,7 +15,6 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { useToast } from "./ui/use-toast";
-import { useRouter } from "next/navigation";
 
 const userFormSchema = z.object({
   email: z.string().email({
