@@ -1,5 +1,9 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { register } from "@/lib/api";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import {
   Form,
   FormControl,
@@ -8,11 +12,7 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "./ui/input";
-import { register } from "@/lib/api";
 import { useToast } from "./ui/use-toast";
 
 const userFormSchema = z
