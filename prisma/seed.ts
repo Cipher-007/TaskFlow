@@ -42,6 +42,7 @@ async function main() {
             projectId: project.id,
             description: `Everything that describes Task ${i}`,
             status: getRandomTaskStatus(),
+            due: new Date(2023, 11, 25),
           };
         }),
       }),
