@@ -1,6 +1,7 @@
 import { validateJWT } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { Prisma, TASK_STATUS } from "@prisma/client";
+import { TASK_STATUS } from "@/lib/types";
+import type { Task } from "@prisma/client";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -42,7 +43,7 @@ export async function POST(req: Request) {
 }
 
 export async function PUT(req: Request) {
-  const data: Prisma.TaskUpdateInput = await req.json();
+  const data: Task = await req.json();
 
   const cookieStore = cookies();
 
