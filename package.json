@@ -6,13 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate",
+    "analyze": "ANALYZE=true next build"
   },
   "prisma": {
     "seed": "ts-node -P tsconfig-seed.json -r tsconfig-paths/register --transpileOnly prisma/seed.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.1",
+    "@next/bundle-analyzer": "^13.4.19",
     "@prisma/client": "4.6.1",
     "@radix-ui/react-avatar": "^1.0.3",
     "@radix-ui/react-dialog": "^1.0.4",
@@ -42,9 +45,8 @@
     "next": "13.4.12",
     "postcss": "8.4.27",
     "react": "18.2.0",
-    "react-day-picker": "^8.8.0",
+    "react-day-picker": "^8.8.1",
     "react-dom": "18.2.0",
-    "react-feather": "2.0.10",
     "react-hook-form": "^7.45.2",
     "react-modal": "^3.16.1",
     "tailwind-merge": "^1.14.0",
