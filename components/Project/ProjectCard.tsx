@@ -40,7 +40,7 @@ export default function ProjectCard({
               <div
                 className="h-full rounded-full bg-violet-600 text-center text-xs text-white"
                 style={{ width: `${progress}%` }}
-              ></div>
+              />
             </div>
             <CardFooter className="flex-row-reverse pr-0">
               <span className="text-sm font-semibold text-gray-600">
