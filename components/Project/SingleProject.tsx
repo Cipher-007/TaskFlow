@@ -8,14 +8,14 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-type ProjectCardProps = Project & {
+type SingleProjectProps = Project & {
   tasks: Task[];
 };
 
-export default function ProjectCard({
+export default function SingleProject({
   project,
 }: {
-  project: ProjectCardProps;
+  project: SingleProjectProps;
 }) {
   const completedCount = project.tasks.filter(
     (t) => t.status === "COMPLETED",
@@ -60,5 +60,3 @@ export default function ProjectCard({
     </Card>
   );
 }
-
-ProjectCard;
