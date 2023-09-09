@@ -1,6 +1,6 @@
-import { ProfileFormValues } from "@/components/ProfileForm";
 import { comparePasswords, hashPassword, validateJWT } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { ProfileFormValues } from "@/lib/zod";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
