@@ -4,7 +4,6 @@ import { signin } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import {
   Form,
   FormControl,
@@ -15,35 +14,20 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { useToast } from "./ui/use-toast";
+import { SigninUserFormValue, signinUserFormSchema } from "@/lib/zod";
 
-const userFormSchema = z.object({
-  email: z.string().email({
-    message: "Please enter a valid email.",
-  }),
-  password: z
-    .string()
-    .min(8, {
-      message: "Password must be at least 8 characters.",
-    })
-    .max(30, {
-      message: "Password must not be longer than 30 characters.",
-    }),
-});
-
-type UserFormValue = z.infer<typeof userFormSchema>;
-
-const defaultValues: Partial<UserFormValue> = {};
+const defaultValues: Partial<SigninUserFormValue> = {};
 
 export default function SigninForm() {
   const route = useRouter();
   const { toast } = useToast();
-  const form = useForm<UserFormValue>({
-    resolver: zodResolver(userFormSchema),
+  const form = useForm<SigninUserFormValue>({
+    resolver: zodResolver(signinUserFormSchema),
     defaultValues,
     mode: "onChange",
   });
 
-  async function onSubmit(data: UserFormValue) {
+  async function onSubmit(data: SigninUserFormValue) {
     const res = await signin(data);
 
     if (res.ok) {
