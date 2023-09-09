@@ -18,7 +18,10 @@ export default function Sidebar() {
           )}
         />
       </Link>
-      <Link href="calendar" className="flex w-full items-center justify-center">
+      <Link
+        href="/calendar"
+        className="flex w-full items-center justify-center"
+      >
         <CalendarDays
           className={clsx(
             "h-12 w-12 stroke-gray-400 transition duration-200 ease-in-out hover:stroke-violet-600",
