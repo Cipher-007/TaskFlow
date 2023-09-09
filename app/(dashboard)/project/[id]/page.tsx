@@ -1,4 +1,4 @@
-import TasksCards from "@/components/Task/TaskCards";
+import ListTasks from "@/components/Task/ListTasks";
 import { getUserFromCookie } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { Metadata } from "next";
@@ -37,7 +37,7 @@ export default async function ProjectPage({ params }: ProjectPageParams) {
 
   return (
     <div className="mx-32 w-full">
-      <TasksCards tasks={project!.tasks} title={project!.name} />
+      <ListTasks tasks={project!.tasks} title={project!.name} />
     </div>
   );
 }
