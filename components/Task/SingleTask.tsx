@@ -13,13 +13,13 @@ import {
   CardTitle,
 } from "../ui/card";
 import { useToast } from "../ui/use-toast";
-import TaskForm from "./TaskForm";
+import TaskEditor from "./TaskEditor";
 
 type Props = {
   task: Task;
 };
 
-export default function TaskC({ task }: Props) {
+export default function SingleTask({ task }: Props) {
   const { toast } = useToast();
 
   async function deleteHandler() {
@@ -57,7 +57,7 @@ export default function TaskC({ task }: Props) {
         )}
       </CardContent>
       <CardFooter className="flex basis-1/3 justify-end gap-4 py-6 pr-14">
-        <TaskForm mode="edit" task={task} />
+        <TaskEditor mode="edit" task={task} />
         <Button variant="destructive" onClick={deleteHandler}>
           Delete
         </Button>
