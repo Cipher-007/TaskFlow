@@ -1,5 +1,5 @@
-import { ProfileFormValues } from "@/components/ProfileForm";
 import type { Project, User, Task } from "@prisma/client";
+import { ProfileFormValues } from "./zod";
 
 type createNewProjectProps = {
   title: string;
@@ -10,7 +10,11 @@ type createNewProjectProps = {
 type FetcherProps = {
   url: string;
   method: string;
-  body: Partial<User> | createNewProjectProps | Partial<Task>;
+  body:
+    | Partial<User>
+    | createNewProjectProps
+    | Partial<Task>
+    | Partial<ProfileFormValues>;
 };
 
 async function fetcher({ url, method, body }: FetcherProps) {
