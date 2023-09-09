@@ -1,6 +1,6 @@
 import Greetings from "@/components/Greetings";
 import ListProjects from "@/components/Project/ListProjects";
-import TaskCards from "@/components/Task/TaskCards";
+import ListTasks from "@/components/Task/ListTasks";
 
 export const metadata = {
   title: "Home",
@@ -17,7 +17,7 @@ export default function Page() {
         <ListProjects />
         <div className="flex-2 mt-6 flex w-full grow">
           <div className="w-full pb-4">
-            <TaskCards />
+            <ListTasks />
           </div>
         </div>
       </div>
