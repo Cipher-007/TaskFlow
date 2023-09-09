@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { register } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import {
   Form,
   FormControl,
@@ -14,63 +13,19 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { useToast } from "./ui/use-toast";
+import { RegisterUserFormValue, registerUserFormSchema } from "@/lib/zod";
 
-const userFormSchema = z
-  .object({
-    firstName: z
-      .string()
-      .min(2, {
-        message: "First name must be at least 2 characters.",
-      })
-      .max(15, {
-        message: "First name must not be longer than 30 characters.",
-      }),
-    lastName: z
-      .string()
-      .min(2, {
-        message: "Last name must be at least 2 characters.",
-      })
-      .max(15, {
-        message: "Last name must not be longer than 30 characters.",
-      }),
-    email: z.string().email({
-      message: "Please enter a valid email.",
-    }),
-    password: z
-      .string()
-      .min(8, {
-        message: "Password must be at least 8 characters.",
-      })
-      .max(30, {
-        message: "Password must not be longer than 30 characters.",
-      }),
-    confirmPassword: z
-      .string()
-      .min(8, {
-        message: "Password must be at least 8 characters.",
-      })
-      .max(30, {
-        message: "Password must not be longer than 30 characters.",
-      }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match.",
-    path: ["password"],
-  });
-
-type UserFormValue = z.infer<typeof userFormSchema>;
-
-const defaultValues: Partial<UserFormValue> = {};
+const defaultValues: Partial<RegisterUserFormValue> = {};
 
 export default function RegisterForm() {
   const { toast } = useToast();
-  const form = useForm<UserFormValue>({
-    resolver: zodResolver(userFormSchema),
+  const form = useForm<RegisterUserFormValue>({
+    resolver: zodResolver(registerUserFormSchema),
     defaultValues,
     mode: "onChange",
   });
 
-  async function onSubmit(data: UserFormValue) {
+  async function onSubmit(data: RegisterUserFormValue) {
     const res = await register(data);
 
     if (res.ok) {
