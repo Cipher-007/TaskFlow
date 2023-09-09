@@ -4,7 +4,9 @@ import dynamic from "next/dynamic";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
-const ProjectCard = dynamic(() => import("@/components/Project/ProjectCard"));
+const SingleProject = dynamic(
+  () => import("@/components/Project/SingleProject"),
+);
 const NewProject = dynamic(() => import("@/components/Project/NewProject"));
 
 async function getData() {
@@ -25,7 +27,7 @@ export default async function ListProjects() {
         projects.map((project) => (
           <div key={project.id} className="w-1/3 p-3">
             <Link href={`/project/${project.id}`}>
-              <ProjectCard project={project} />
+              <SingleProject project={project} />
             </Link>
           </div>
         ))
