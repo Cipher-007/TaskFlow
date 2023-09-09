@@ -2,6 +2,7 @@ import { getUserFromCookie } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { TASK_STATUS } from "@/lib/types";
 import type { Task } from "@prisma/client";
+import dynamic from "next/dynamic";
 import { cookies } from "next/headers";
 import {
   Card,
@@ -11,8 +12,9 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Separator } from "../ui/separator";
-import TaskC from "./Task";
-import TaskForm from "./TaskForm";
+import SingleTask from "./SingleTask";
+
+const TaskEditor = dynamic(() => import("./TaskEditor"));
 
 type TaskCardProps = {
   title?: string;
@@ -35,7 +37,7 @@ async function getData() {
     },
   });
 }
-export default async function TaskCards({ title, tasks }: TaskCardProps) {
+export default async function ListTasks({ title, tasks }: TaskCardProps) {
   const data = tasks || (await getData());
 
   return (
@@ -52,7 +54,7 @@ export default async function TaskCards({ title, tasks }: TaskCardProps) {
         {data && data.length ? (
           <>
             {data.map((task) => (
-              <TaskC task={task} key={task.id} />
+              <SingleTask task={task} key={task.id} />
             ))}
           </>
         ) : (
@@ -63,7 +65,7 @@ export default async function TaskCards({ title, tasks }: TaskCardProps) {
       </CardContent>
       {title && (
         <CardFooter className="justify-center">
-          <TaskForm mode="create" />
+          <TaskEditor mode="create" />
         </CardFooter>
       )}
     </Card>
