@@ -1,13 +1,7 @@
 import { createJWT, hashPassword } from "@/lib/auth";
 import { db } from "@/lib/db";
+import type { User } from "@prisma/client";
 import { serialize } from "cookie";
-
-type User = {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-};
 
 export async function POST(request: Request) {
   const { email, password, firstName, lastName }: User = await request.json();
