@@ -1,4 +1,3 @@
-import GlassPane from "@/components/GlassPane";
 import React from "react";
 import "@/styles/globals.css";
 import Sidebar from "@/components/Sidebar";
@@ -10,11 +9,11 @@ export default function DashboardRootlayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="candy-mesh h-screen w-screen p-4">
-      <GlassPane className="flex h-full w-full items-center">
+    <div className="h-screen w-screen bg-gradient-to-r from-blue-700 via-blue-800 to-gray-900 p-4">
+      <div className="flex h-full w-full items-center">
         <Sidebar />
         {children}
-      </GlassPane>
+      </div>
       <div id="modal"></div>
       <Toaster />
     </div>
