@@ -2,7 +2,15 @@ import GreetingsSkeleton from "@/components/GreetingsSkeleton";
 import ProjectCardSkeleton from "@/components/Project/ProjectCardSkeleton";
 import TasksCardSkeleton from "@/components/Task/TasksCardSkeleton";
 
-const projects = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
+const projects = [
+  { id: 1 },
+  { id: 2 },
+  { id: 3 },
+  { id: 4 },
+  { id: 5 },
+  { id: 6 },
+  { id: 7 },
+];
 
 export default function HomePageLoader() {
   return (
@@ -13,7 +21,7 @@ export default function HomePageLoader() {
         </div>
         <div className="flex-2 -m-3 mt-3 flex grow flex-wrap items-center ">
           {projects.map((project) => (
-            <div key={project.id} className="w-1/3 p-3">
+            <div key={project.id} className="w-1/4 p-3">
               <ProjectCardSkeleton />
             </div>
           ))}
