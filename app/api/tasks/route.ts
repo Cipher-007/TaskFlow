@@ -1,22 +1,15 @@
 import { validateJWT } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { TASK_STATUS } from "@/lib/types";
 import type { Task } from "@prisma/client";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const data: {
-    name: string;
-    description: string;
-    due: string;
-    projectId: string;
-    status: TASK_STATUS;
-  } = await req.json();
+  const { name, description, status, projectId, due }: Task = await req.json();
 
   const cookieStore = cookies();
 
-  const c = cookieStore.get(process.env.COOKIE_NAME! as string);
+  const c = cookieStore.get(process.env.COOKIE_NAME!);
 
   if (!c) {
     return new Response("Unauthorized", {
@@ -24,16 +17,16 @@ export async function POST(req: Request) {
     });
   }
 
-  const user = await validateJWT(c.value);
+  const { id } = await validateJWT(c.value);
 
   await db.task.create({
     data: {
-      name: data.name,
-      description: data.description,
-      due: data.due,
-      project: { connect: { id: data.projectId } },
-      status: data.status,
-      owner: { connect: { id: user.id } },
+      name: name,
+      description: description,
+      due: due,
+      project: { connect: { id: projectId } },
+      status: status,
+      owner: { connect: { id } },
     },
   });
 
@@ -47,7 +40,7 @@ export async function PUT(req: Request) {
 
   const cookieStore = cookies();
 
-  const c = cookieStore.get(process.env.COOKIE_NAME! as string);
+  const c = cookieStore.get(process.env.COOKIE_NAME!);
 
   if (!c) {
     return new Response("Unauthorized", {
