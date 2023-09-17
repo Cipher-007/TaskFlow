@@ -14,10 +14,12 @@ import {
 import { Input } from "./ui/input";
 import { useToast } from "./ui/use-toast";
 import { RegisterUserFormValue, registerUserFormSchema } from "@/lib/zod";
+import { useRouter } from "next/navigation";
 
 const defaultValues: Partial<RegisterUserFormValue> = {};
 
 export default function RegisterForm() {
+  const router = useRouter();
   const { toast } = useToast();
   const form = useForm<RegisterUserFormValue>({
     resolver: zodResolver(registerUserFormSchema),
@@ -33,6 +35,7 @@ export default function RegisterForm() {
         title: "Account created.",
         description: "We've created your account for you.",
       });
+      router.replace("/home");
     }
 
     if (res.status === 409) {

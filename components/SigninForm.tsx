@@ -35,7 +35,7 @@ export default function SigninForm() {
         title: "Signin successful",
         description: "You are now signed in.",
       });
-      route.push("/home");
+      route.replace("/home");
     }
 
     if (res.status === 401) {
