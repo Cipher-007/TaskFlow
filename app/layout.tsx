@@ -6,9 +6,10 @@ export default function DashboardRootlayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head />
-      <body>{children}
+      <body className="bg-gradient-to-b from-black to-blue-900">
+        {children}
       </body>
     </html>
   );
