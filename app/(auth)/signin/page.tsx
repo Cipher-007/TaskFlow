@@ -7,7 +7,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { cookies } from "next/headers";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Sign In",
@@ -15,6 +17,12 @@ export const metadata = {
 };
 
 export default function Signin() {
+  const cookieStore = cookies();
+
+  const c = cookieStore.get(process.env.COOKIE_NAME!);
+  if (c) {
+    redirect("/home");
+  }
   return (
     <Card className="w-[400px]">
       <CardHeader>
