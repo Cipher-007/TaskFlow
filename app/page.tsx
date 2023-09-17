@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <div className="candy-mesh h-screen w-screen p-4">
+    <div className="h-screen w-screen p-4">
       <nav className="flex h-14 items-center">
         <Link href="/home">
           <div className="absolute left-0 ml-8 flex gap-4 text-xl">
@@ -29,6 +29,7 @@ export default function Home() {
       </nav>
       <div className="-mt-16 flex h-full flex-row items-center">
         <div className="my-auto flex basis-1/2 flex-col items-center">
+          <h1 className="pb-2 text-5xl">Welcome to ProjectVerse</h1>
           <p className="mb-4 text-3xl">One app to replace them all.</p>
           <div>
             <Button className="m-2">
