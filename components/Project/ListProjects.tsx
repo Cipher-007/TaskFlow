@@ -25,7 +25,7 @@ export default async function ListProjects() {
     <div className="flex-2 -m-3 mt-3 flex grow flex-wrap items-center ">
       {projects.length > 0 ? (
         projects.map((project) => (
-          <div key={project.id} className="w-1/3 p-3">
+          <div key={project.id} className="w-1/4 p-3">
             <Link href={`/project/${project.id}`}>
               <SingleProject project={project} />
             </Link>
@@ -36,7 +36,7 @@ export default async function ListProjects() {
           <p>No projects yet</p>
         </div>
       )}
-      <div className="w-1/3 p-4">
+      <div className="w-1/4 p-4">
         <NewProject />
       </div>
     </div>
