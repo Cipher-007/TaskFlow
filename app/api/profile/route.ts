@@ -9,7 +9,7 @@ export async function PUT(req: Request) {
 
   const cookieStore = cookies();
 
-  const c = cookieStore.get(process.env.COOKIE_NAME! as string);
+  const c = cookieStore.get(process.env.COOKIE_NAME!);
 
   if (!c) {
     console.log("Unauthorized");

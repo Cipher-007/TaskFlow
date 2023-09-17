@@ -8,7 +8,7 @@ export async function POST(request: Request) {
 
   const cookieStore = cookies();
 
-  const c = cookieStore.get(process.env.COOKIE_NAME! as string);
+  const c = cookieStore.get(process.env.COOKIE_NAME!);
 
   if (!c) {
     return new Response("Unauthorized");
@@ -17,7 +17,6 @@ export async function POST(request: Request) {
   const user = await validateJWT(c.value);
 
   await db.project.create({
-    // /* @ts-ignore */
     data: {
       name: data.name,
       description: data.description,
