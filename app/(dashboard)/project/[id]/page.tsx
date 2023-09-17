@@ -10,10 +10,26 @@ type ProjectPageParams = {
   };
 };
 
-export const metadata: Metadata = {
-  title: "Project",
-  description: "Project Page",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const id = params.id;
+
+  const data = await db.project.findFirst({
+    where: { id },
+    select: {
+      name: true,
+      description: true,
+    },
+  });
+
+  return {
+    title: data?.name,
+    description: data?.description,
+  };
+}
 
 async function getData(id: string) {
   const user = await getUserFromCookie(cookies());
