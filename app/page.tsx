@@ -1,7 +1,7 @@
+import NavBar from "@/components/NavBar";
 import { Button } from "@/components/ui/button";
-import { CheckSquare, FolderKanban, LayoutDashboard } from "lucide-react";
+import { CheckSquare, LayoutDashboard } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 
 export const metadata = {
   title: "Projectverse",
@@ -10,27 +10,14 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <div className="h-screen w-screen p-4">
-      <nav className="flex h-14 items-center">
-        <Link href="/home">
-          <div className="absolute left-0 ml-8 flex gap-4 text-xl">
-            <FolderKanban />
-            Projectverse
-          </div>
-        </Link>
-        <div className="absolute right-0 mr-8 flex gap-8">
-          <Link href="/register" className="font-medium transition-colors">
-            <Button>Register</Button>
-          </Link>
-          <Link href="/signin" className="font-medium transition-colors">
-            <Button>Sign In</Button>
-          </Link>
-        </div>
-      </nav>
-      <div className="-mt-16 flex h-full flex-row items-center">
-        <div className="my-auto flex basis-1/2 flex-col items-center">
-          <h1 className="pb-2 text-5xl">Welcome to ProjectVerse</h1>
-          <p className="mb-4 text-3xl">One app to replace them all.</p>
+    <div className="h-full w-full p-8">
+      <NavBar />
+      <div className="pb-5">
+        <div className="mx-auto flex max-w-7xl flex-col items-center pb-32 pt-60 font-extrabold tracking-tighter">
+          <h1 className="pb-2 text-3xl lg:text-6xl">Welcome to ProjectVerse</h1>
+          <p className="mb-4 text-xl lg:text-4xl">
+            One app to replace them all.
+          </p>
           <div>
             <Button className="m-2">
               <span className="mr-1">Tasks</span>
@@ -46,9 +33,10 @@ export default function Home() {
           src="/demo.png"
           alt="demo"
           sizes="100vw"
-          width={500}
-          height={300}
-          className="mr-16 h-auto w-1/2 rounded-2xl shadow-2xl"
+          width={1500}
+          height={800}
+          priority={true}
+          className="mx-auto rounded-2xl border-8 border-white/20 shadow-2xl"
         />
       </div>
     </div>
