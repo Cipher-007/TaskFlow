@@ -1,4 +1,4 @@
-import { comparePasswords, createJWT, hashPassword } from "@/lib/auth";
+import { comparePasswords, createJWT } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { serialize } from "cookie";
 
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
   if (isUser) {
     const jwt = await createJWT(user);
 
-    return new Response(null, {
+    return new Response("Sign in successful", {
       status: 201,
       headers: {
         "Set-Cookie": serialize(process.env.COOKIE_NAME!, jwt, {
@@ -32,6 +32,10 @@ export async function POST(req: Request) {
           sameSite: "strict",
         }),
       },
+    });
+  } else {
+    return new Response("Invalid login", {
+      status: 401,
     });
   }
 }
