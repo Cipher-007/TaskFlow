@@ -1,4 +1,5 @@
 "use client";
+
 import { updateTask } from "@/lib/api";
 import { formatDate } from "@/lib/utils";
 import type { Task } from "@prisma/client";
@@ -38,7 +39,7 @@ export default function SingleTask({ task }: Props) {
   }
 
   return (
-    <Card className="m-5 flex flex-row py-2">
+    <Card className="m-4 flex flex-row py-2">
       <CardHeader className="basis-1/3">
         <CardTitle>{task.name}</CardTitle>
         <CardDescription>{task.description}</CardDescription>
