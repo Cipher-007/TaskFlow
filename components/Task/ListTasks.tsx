@@ -1,6 +1,6 @@
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getUserFromCookie } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { TASK_STATUS } from "@/lib/types";
 import type { Task } from "@prisma/client";
 import dynamic from "next/dynamic";
 import { cookies } from "next/headers";
@@ -27,11 +27,9 @@ async function getData() {
     where: {
       ownerId: user?.id,
       NOT: {
-        status: TASK_STATUS.COMPLETED,
-        deleted: false,
+        deleted: true,
       },
     },
-    take: 5,
     orderBy: {
       due: "asc",
     },
@@ -39,35 +37,50 @@ async function getData() {
 }
 export default async function ListTasks({ title, tasks }: TaskCardProps) {
   const data = tasks || (await getData());
+  const Status = ["completed", "started", "not_started"];
 
   return (
-    <Card>
+    <Card className="max-h-[57rem]">
       {title && (
         <>
-          <CardHeader className="items-center">
+          <CardHeader className="items-center pb-2">
             <CardTitle>{title}</CardTitle>
           </CardHeader>
-          <Separator />
         </>
       )}
-      <CardContent className="max-h-[46rem] overflow-y-auto">
-        {data && data.length ? (
-          <>
-            {data.map((task) => (
-              <SingleTask task={task} key={task.id} />
-            ))}
-          </>
-        ) : (
-          <div className="w-full text-center text-3xl font-medium">
-            No tasks
-          </div>
-        )}
-      </CardContent>
-      {title && (
-        <CardFooter className="justify-center">
-          <TaskEditor mode="create" />
-        </CardFooter>
-      )}
+      <Tabs defaultValue="completed" className="w-full">
+        <TabsList className="mx-auto my-4 grid w-[400px] grid-cols-3">
+          {Status.map((status) => (
+            <TabsTrigger value={status} key={status.toUpperCase()}>
+              {status.toUpperCase()}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        <Separator />
+        {Status.map((status) => (
+          <TabsContent
+            value={status}
+            key={status}
+            className="max-h[45rem] mt-0"
+          >
+            <CardContent className="max-h-[44rem] overflow-y-auto pb-0">
+              {data && data.length ? (
+                data
+                  .filter((task) => task.status === status.toUpperCase())
+                  .map((task) => <SingleTask task={task} key={task.id} />)
+              ) : (
+                <div className="w-full text-center text-3xl font-medium">
+                  No tasks
+                </div>
+              )}
+            </CardContent>
+          </TabsContent>
+        ))}
+      </Tabs>
+      <Separator />
+      <CardFooter className="h-20 justify-center pt-2">
+        {title && <TaskEditor mode="create" />}
+      </CardFooter>
     </Card>
   );
 }
