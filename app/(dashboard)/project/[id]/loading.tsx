@@ -1,4 +1,4 @@
-import TasksCardSkeleton from "@/components/Task/TasksCardSkeleton";
+import TasksCardSkeleton from "@/components/task/tasks-card-skeleton";
 
 export default function ProjectLoading() {
   return (

@@ -1,4 +1,4 @@
-import { comparePasswords, hashPassword, validateJWT } from "@/lib/auth";
+import { comparePasswords, getUserFromCookie, hashPassword } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { ProfileFormValues } from "@/lib/zod";
 import { cookies } from "next/headers";
@@ -7,11 +7,9 @@ import { NextResponse } from "next/server";
 export async function PUT(req: Request) {
   const data: ProfileFormValues = await req.json();
 
-  const cookieStore = cookies();
+  const user = await getUserFromCookie(cookies());
 
-  const c = cookieStore.get(process.env.COOKIE_NAME!);
-
-  if (!c) {
+  if (!user) {
     console.log("Unauthorized");
 
     return new Response("Unauthorized", {
@@ -20,8 +18,6 @@ export async function PUT(req: Request) {
   }
 
   const { new_password, ...body } = data;
-
-  const user = await validateJWT(c.value);
 
   const password = await db.user.findUnique({
     where: {
@@ -40,8 +36,6 @@ export async function PUT(req: Request) {
       { status: 401 },
     );
   }
-
-  console.log(body);
 
   await db.user.update({
     where: {

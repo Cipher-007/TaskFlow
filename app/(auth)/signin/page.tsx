@@ -1,4 +1,4 @@
-import SigninForm from "@/components/SigninForm";
+import SigninForm from "@/components/auth-forms/signin-form";
 import {
   Card,
   CardContent,
@@ -16,7 +16,7 @@ export const metadata = {
   description: "Sign In Page",
 };
 
-export default function Signin() {
+export default function SigninPage() {
   const cookieStore = cookies();
 
   const c = cookieStore.get(process.env.COOKIE_NAME!);
@@ -32,7 +32,7 @@ export default function Signin() {
       <CardContent className="pb-0">
         <SigninForm />
       </CardContent>
-      <CardFooter>
+      <CardFooter className="justify-center">
         <Link href="/register" className="font-bold text-blue-600">
           Don&apos;t have an account?
         </Link>

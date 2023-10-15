@@ -1,4 +1,4 @@
-import UserProfile from "@/components/UserProfile";
+import Profile from "@/components/profile/profile";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,6 +6,6 @@ export const metadata: Metadata = {
   description: "User Profile",
 };
 
-export default function Profile() {
-  return <UserProfile />;
+export default function ProfilePage() {
+  return <Profile />;
 }

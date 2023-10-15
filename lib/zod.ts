@@ -26,6 +26,9 @@ export const profileFormSchema = z
       .max(30, {
         message: "Email must not be longer than 30 characters.",
       }),
+    contact: z.string().min(10, {
+      message: "Please enter a valid phone number",
+    }),
     password: z
       .string()
       .min(8, {
@@ -56,7 +59,7 @@ export const profileFormSchema = z
     path: ["new_password"],
   });
 
-export const registerUserFormSchema = z
+export const IndividualRegistrationFormSchema = z
   .object({
     firstName: z
       .string()
@@ -77,6 +80,87 @@ export const registerUserFormSchema = z
     email: z.string().email({
       message: "Please enter a valid email.",
     }),
+    contact: z.string().min(10, {
+      message: "Please enter a valid phone number",
+    }),
+    password: z
+      .string()
+      .min(8, {
+        message: "Password must be at least 8 characters.",
+      })
+      .max(30, {
+        message: "Password must not be longer than 30 characters.",
+      }),
+    confirmPassword: z
+      .string()
+      .min(8, {
+        message: "Password must be at least 8 characters.",
+      })
+      .max(30, {
+        message: "Password must not be longer than 30 characters.",
+      }),
+    organizationId: z.string(),
+    role: z.enum([
+      "ORGANIZATION_ADMIN",
+      "TEAM_LEAD",
+      "PRODUCT_OWNER",
+      "PROJECT_MANAGER",
+      "DEVELOPER",
+      "FRONTEND_DEVELOPER",
+      "BACKEND_DEVELOPER",
+      "FULL_STACK_DEVELOPER",
+      "QA_TESTER",
+      "DEVOPS_ENGINEER",
+      "DESIGNER",
+    ]),
+  })
+  .superRefine(({ password, confirmPassword }, ctx) => {
+    if (password !== confirmPassword)
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Passwords do not match.",
+      });
+  });
+
+export const commentFormSchema = z.object({
+  comment: z.string().min(1, {
+    message: "Comment must be at least 1 characters.",
+  }),
+});
+
+export const organizationRegistrationSchema = z
+  .object({
+    organizationName: z.string().min(2, {
+      message: "Organization name must be at least 2 characters long",
+    }),
+    organizationcontact: z.string().min(10, {
+      message: "Please enter a valid phone number",
+    }),
+    organizationemail: z.string().email({
+      message: "Please enter a valid email",
+    }),
+    firstName: z
+      .string()
+      .min(2, {
+        message: "First name must be at least 2 characters.",
+      })
+      .max(15, {
+        message: "First name must not be longer than 30 characters.",
+      }),
+    lastName: z
+      .string()
+      .min(2, {
+        message: "Last name must be at least 2 characters.",
+      })
+      .max(15, {
+        message: "Last name must not be longer than 30 characters.",
+      }),
+    email: z.string().email({
+      message: "Please enter a valid email",
+    }),
+    contact: z.string().min(10, {
+      message: "Please enter a valid phone number",
+    }),
     password: z
       .string()
       .min(8, {
@@ -95,11 +179,11 @@ export const registerUserFormSchema = z
       }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match.",
-    path: ["password"],
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
   });
 
-export const signinUserFormSchema = z.object({
+export const signinFormSchema = z.object({
   email: z.string().email({
     message: "Please enter a valid email.",
   }),
@@ -119,18 +203,19 @@ export const projectFormSchema = z.object({
     .min(2, {
       message: "Project name must be at least 2 characters.",
     })
-    .max(15, {
+    .max(30, {
       message: "Project name must not be longer than 30 characters.",
     }),
-  description: z
-    .string()
-    .min(2, {
-      message: "Project description must be at least 2 characters.",
-    })
-    .max(255, {
-      message: "Project description must not be longer than 100 characters.",
-    }),
-  due: z.coerce.date(),
+  description: z.string().min(2, {
+    message: "Project description must be at least 2 characters.",
+  }),
+  startDate: z.coerce.date(),
+  endDate: z.coerce.date(),
+  priority: z.enum(["LOW", "NORMAL", "HIGH"]),
+});
+
+export const approvalFormSchema = z.object({
+  teamId: z.string(),
 });
 
 export const taskFormSchema = z.object({
@@ -150,12 +235,38 @@ export const taskFormSchema = z.object({
     .max(255, {
       message: "Task description must not be longer than 255 characters.",
     }),
-  due: z.coerce.date(),
-  status: z.enum(["NOT_STARTED", "STARTED", "COMPLETED"]),
+  endDate: z.coerce.date(),
+  startDate: z.coerce.date(),
+  priority: z.enum(["LOW", "NORMAL", "HIGH"]),
+  status: z.enum([
+    "TODO",
+    "IN_PROGRESS",
+    "ON_HOLD",
+    "DONE",
+    "CANCELED",
+    "BACKLOG",
+  ]),
+});
+
+export const teamFormSchema = z.object({
+  name: z.string().min(4, {
+    message: "Team name must be at least 2 characters.",
+  }),
+  description: z.string().min(4, {
+    message: "Team description must be at least 2 characters.",
+  }),
 });
 
 export type ProfileFormValues = z.infer<typeof profileFormSchema>;
 export type ProjectFormValue = z.infer<typeof projectFormSchema>;
-export type RegisterUserFormValue = z.infer<typeof registerUserFormSchema>;
+export type IndividualRegistrationFormValue = z.infer<
+  typeof IndividualRegistrationFormSchema
+>;
+export type OrganizationRegistrationFormValue = z.infer<
+  typeof organizationRegistrationSchema
+>;
 export type TaskFormValue = z.infer<typeof taskFormSchema>;
-export type SigninUserFormValue = z.infer<typeof signinUserFormSchema>;
+export type SigninFormValue = z.infer<typeof signinFormSchema>;
+export type ApprovalFormValue = z.infer<typeof approvalFormSchema>;
+export type CommentFormValue = z.infer<typeof commentFormSchema>;
+export type TeamFormValue = z.infer<typeof teamFormSchema>;

@@ -3,7 +3,8 @@ import { db } from "@/lib/db";
 import { serialize } from "cookie";
 
 export async function POST(req: Request) {
-  const { email, password } = await req.json();
+  const { email, password }: { email: string; password: string } =
+    await req.json();
 
   const user = await db.user.findUnique({
     where: {
@@ -17,9 +18,9 @@ export async function POST(req: Request) {
     });
   }
 
-  const isUser = await comparePasswords(password, user.password);
+  const isAuth = await comparePasswords(password, user.password);
 
-  if (isUser) {
+  if (isAuth) {
     const jwt = await createJWT(user);
 
     return new Response("Sign in successful", {

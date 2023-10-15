@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
-const PUBLIC_FILE = /\.(.*)$/;
 
 const verifyJWT = async (jwt: string) => {
   const { payload } = await jwtVerify(
@@ -8,7 +7,20 @@ const verifyJWT = async (jwt: string) => {
     new TextEncoder().encode(process.env.JWT_SECRET),
   );
 
-  return payload;
+  return payload as {
+    payload: {
+      id: string;
+      email: string;
+      organizationId: string;
+      teamId: string;
+      firstName: string;
+      lastName: string;
+      role: string;
+    };
+    exp: number;
+    iat: number;
+    nbf: number;
+  };
 };
 
 export default async function middleware(req: NextRequest, res: NextResponse) {
@@ -20,7 +32,7 @@ export default async function middleware(req: NextRequest, res: NextResponse) {
   }
 
   try {
-    await verifyJWT(jwt.value);
+    const user = await verifyJWT(jwt.value);
     return NextResponse.next();
   } catch (e) {
     console.error(e);
@@ -31,6 +43,7 @@ export default async function middleware(req: NextRequest, res: NextResponse) {
 
 export const config = {
   matcher: [
+    "/admin",
     "/calendar",
     "/profile",
     "/settings",
