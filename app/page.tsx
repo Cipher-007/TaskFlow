@@ -1,4 +1,4 @@
-import NavBar from "@/components/NavBar";
+import Navbar from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { CheckSquare, LayoutDashboard } from "lucide-react";
 import Image from "next/image";
@@ -10,8 +10,8 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <div className="h-full w-full p-8">
-      <NavBar />
+    <div className="h-full w-full p-8 text-white">
+      <Navbar />
       <div className="pb-5">
         <div className="mx-auto flex max-w-7xl flex-col items-center pb-32 pt-60 font-extrabold tracking-tighter">
           <h1 className="pb-2 text-3xl lg:text-6xl">Welcome to ProjectVerse</h1>

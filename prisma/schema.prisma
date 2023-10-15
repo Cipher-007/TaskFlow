@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,15 +8,73 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(uuid())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  email     String    @unique
-  password  String
-  firstName String?
-  lastName  String?
-  projects  Project[]
-  tasks     Task[]
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  firstName String
+  lastName  String
+
+  email    String   @unique
+  password String
+  contact  String   @unique
+  role     UserRole @default(DEVELOPER)
+
+  team   Team?   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId String?
+
+  theme Theme @default(dark)
+
+  comments    Comment[]
+  permissions Permission[]
+
+  Organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+  Request        Request[]
+}
+
+model Organization {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name    String @unique
+  email   String @unique
+  contact String @unique
+
+  employees User[]
+  teams     Team[]
+
+  projects Project[]
+  tasks    Task[]
+  Request  Request[]
+}
+
+model Team {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String @unique
+  description String
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  projects Project[]
+  tasks    Task[]
+  members  User[]
+}
+
+model Request {
+  id             String        @id @default(uuid())
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String        @unique
+  status         RequestStatus @default(PENDING)
 }
 
 model Project {
@@ -27,23 +82,26 @@ model Project {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  ownerId String
-  owner   User   @relation(fields: [ownerId], references: [id])
+  name        String   @unique
+  description String
+  priority    Priority @default(NORMAL)
 
-  name        String
-  description String?
-  due         DateTime?
-  tasks       Task[]
-  deleted     Boolean   @default(false)
+  deleted Boolean @default(false)
 
-  @@unique([ownerId, name])
-  @@index([ownerId, id])
-}
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId String
 
-enum TASK_STATUS {
-  NOT_STARTED
-  STARTED
-  COMPLETED
+  Organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  tasks Task[]
+
+  comments Comment[]
+
+  startDate DateTime
+  endDate   DateTime
+
+  permissions Permission[]
 }
 
 model Task {
@@ -51,18 +109,110 @@ model Task {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  ownerId String
-  owner   User   @relation(fields: [ownerId], references: [id])
-
-  projectId String
-  project   Project @relation(fields: [projectId], references: [id])
-
-  status      TASK_STATUS @default(NOT_STARTED)
   name        String
   description String
 
-  due     DateTime?
-  deleted Boolean   @default(false)
+  startDate DateTime
+  endDate   DateTime
 
-  @@index([ownerId])
+  deleted Boolean @default(false)
+
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+
+  status   TASK_STATUS @default(TODO)
+  priority Priority    @default(NORMAL)
+
+  permissions Permission[]
+
+  Organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  Team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId String
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  content     String
+  permissions Permission[]
+
+  @@index([projectId])
+}
+
+model Permission {
+  id   String         @id @default(uuid())
+  type PermissionType @default(NONE)
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String?
+
+  task   Task?   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId String?
+
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  commentId String?
+
+  @@index([userId, projectId, taskId, commentId])
+}
+
+enum PermissionType {
+  ALL
+  READ
+  WRITE
+  MODIFY
+  DELETE
+  NONE
+}
+
+enum UserRole {
+  ORGANIZATION_ADMIN
+  TEAM_LEAD
+  PRODUCT_OWNER
+  PROJECT_MANAGER
+  DEVELOPER
+  FRONTEND_DEVELOPER
+  BACKEND_DEVELOPER
+  FULL_STACK_DEVELOPER
+  QA_TESTER
+  DEVOPS_ENGINEER
+  DESIGNER
+}
+
+enum TASK_STATUS {
+  TODO
+  IN_PROGRESS
+  ON_HOLD
+  DONE
+  CANCELED
+  BACKLOG
+}
+
+enum Priority {
+  HIGH
+  NORMAL
+  LOW
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum Theme {
+  dark
+  light
 }
