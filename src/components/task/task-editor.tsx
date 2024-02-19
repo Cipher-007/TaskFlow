@@ -1,16 +1,15 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { TaskFormProp } from "@/lib/types";
 import { useState } from "react";
+import { Button } from "~/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
-import TaskForm from "./tasks-form";
+} from "~/components/ui/dialog";
+import TaskForm, { type TaskFormProp } from "./tasks-form";
 
 const EditTaskForm = {
   title: "Edit Task",
@@ -24,11 +23,14 @@ const CreateTaskForm = {
 
 export default function TaskEditor({ mode, task }: TaskFormProp) {
   const [open, setOpen] = useState(false);
-  let content = mode === "create" ? CreateTaskForm : EditTaskForm;
+  const content = mode === "create" ? CreateTaskForm : EditTaskForm;
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={mode === "create" ? "default" : "outline"}>
+        <Button
+          variant={mode === "create" ? "default" : "outline"}
+          className="text-sm"
+        >
           {content.title}
         </Button>
       </DialogTrigger>

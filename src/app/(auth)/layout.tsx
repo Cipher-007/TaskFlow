@@ -1,7 +1,3 @@
-import React from "react";
-import "@/styles/globals.css";
-import { Toaster } from "@/components/ui/toaster";
-
 export default function AuthRootlayout({
   children,
 }: {
@@ -12,7 +8,6 @@ export default function AuthRootlayout({
       <div className="flex h-full w-full items-center justify-center">
         {children}
       </div>
-      <Toaster />
     </div>
   );
 }

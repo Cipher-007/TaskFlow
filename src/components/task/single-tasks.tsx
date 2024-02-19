@@ -1,7 +1,9 @@
 "use client";
 
-import { formatDate } from "@/lib/utils";
-import type { Task } from "@prisma/client";
+import { useRouter } from "next/navigation";
+import { formatDate } from "~/lib/utils";
+import type { Task } from "~/server/db/schema";
+import { api } from "~/trpc/react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import {
@@ -21,32 +23,31 @@ type Props = {
 
 export default function SingleTask({ task }: Props) {
   const { toast } = useToast();
-
-  async function deleteHandler() {
-    const res = await fetch("/api/tasks", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: task.id }),
-    });
-
-    if (res.ok) {
+  const router = useRouter();
+  const deleteTask = api.task.delete.useMutation({
+    onSuccess: () => {
       toast({
         title: "Task deleted",
         description: "Task deleted successfully",
         variant: "destructive",
       });
-    }
+      router.refresh();
+    },
+  });
+
+  function deleteHandler() {
+    deleteTask.mutate({ id: task.id });
   }
 
   return (
     <Card className="m-4 flex flex-row py-2">
       <CardHeader className="basis-1/3">
-        <CardTitle>{task.name}</CardTitle>
-        <CardDescription>{task.description}</CardDescription>
+        <CardTitle className="text-sm md:text-xl">{task.name}</CardTitle>
+        <CardDescription className="text-xs md:text-sm">
+          {task.description}
+        </CardDescription>
       </CardHeader>
-      <CardContent className="flex basis-1/3 flex-row items-center justify-between gap-4 p-6">
+      <CardContent className="flex basis-1/3 flex-row items-center justify-between gap-4 p-6 text-sm md:text-lg">
         {
           <>
             <div className="space-x-2">
@@ -54,7 +55,7 @@ export default function SingleTask({ task }: Props) {
               <span>{formatDate(task.endDate)}</span>
             </div>
             <div>{task.priority}</div>
-            <Badge className="text-sm">{task.status}</Badge>
+            <Badge className="text-sm md:text-lg">{task.status}</Badge>
           </>
         }
       </CardContent>

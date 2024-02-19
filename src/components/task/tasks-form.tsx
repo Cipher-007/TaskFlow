@@ -1,14 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { TaskFormProp } from "@/lib/types";
-import { cn, formatDate } from "@/lib/utils";
-import { TaskFormValue, taskFormSchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Calendar as CalendarIcon } from "lucide-react";
-import dynamic from "next/dynamic";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "~/components/ui/button";
+import Calendar from "~/components/ui/calendar";
 import {
   Form,
   FormControl,
@@ -16,19 +13,64 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+} from "~/components/ui/form";
+import { Input } from "~/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "~/components/ui/popover";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
-import { Textarea } from "../ui/textarea";
-import { useToast } from "../ui/use-toast";
+} from "~/components/ui/select";
+import { Textarea } from "~/components/ui/textarea";
+import { useToast } from "~/components/ui/use-toast";
+import { cn, formatDate } from "~/lib/utils";
+import { api } from "~/trpc/react";
+import { type Task } from "./schema";
 
-const Calendar = dynamic(() => import("@/components/ui/calendar"));
+const taskFormSchema = z.object({
+  name: z
+    .string()
+    .min(2, {
+      message: "Task name must be at least 2 characters.",
+    })
+    .max(15, {
+      message: "Task name must not be longer than 30 characters.",
+    }),
+  description: z
+    .string()
+    .min(2, {
+      message: "Task description must be at least 2 characters.",
+    })
+    .max(255, {
+      message: "Task description must not be longer than 255 characters.",
+    }),
+  endDate: z.coerce.date(),
+  startDate: z.coerce.date(),
+  priority: z.enum(["LOW", "NORMAL", "HIGH"]),
+  status: z.enum([
+    "TODO",
+    "IN_PROGRESS",
+    "ON_HOLD",
+    "DONE",
+    "CANCELED",
+    "BACKLOG",
+  ]),
+});
+
+type TaskFormValue = z.infer<typeof taskFormSchema>;
+
+export type TaskFormProp = {
+  mode: "create" | "edit";
+  task?: Task;
+  content?: { title: string; toastDescription: string };
+  setToggle?: (toggle: boolean) => void;
+};
 
 export default function TaskForm({
   mode,
@@ -37,17 +79,42 @@ export default function TaskForm({
   setToggle,
 }: TaskFormProp) {
   const [isDisabled, setIsDisabled] = useState(false);
-  const router = useRouter();
   const pathname = usePathname();
+  const router = useRouter();
+
+  const orgId = pathname.split("/")[2];
+  const teamId = pathname.split("/")[3];
+  const projectId = pathname.split("/")[5];
+
+  const createTask = api.task.create.useMutation({
+    onSuccess: () => {
+      toast({
+        description: content!.toastDescription,
+      });
+      setToggle!(false);
+      form.reset();
+      router.refresh();
+    },
+  });
+  const updateTask = api.task.update.useMutation({
+    onSuccess: () => {
+      toast({
+        description: content!.toastDescription,
+      });
+      setToggle!(false);
+      form.reset();
+      router.refresh();
+    },
+  });
   const { toast } = useToast();
 
   const defaultValues = {
-    name: task?.name,
-    description: task?.description,
+    name: task?.name ?? "",
+    description: task?.description ?? "",
     startDate: task?.startDate,
     endDate: task?.endDate,
-    status: task?.status,
-    priority: task?.priority,
+    status: task?.status ?? "TODO",
+    priority: task?.priority ?? "NORMAL",
   };
 
   const form = useForm<TaskFormValue>({
@@ -56,52 +123,26 @@ export default function TaskForm({
     mode: "onChange",
   });
 
-  async function onSubmit(data: TaskFormValue) {
+  function onSubmit(data: TaskFormValue) {
     setIsDisabled(true);
-
-    let res;
-    let body;
+    const body = {
+      ...data,
+      teamId: teamId!,
+    };
 
     if (mode === "create") {
-      body = {
-        ...data,
-        startDate: data.startDate?.toISOString(),
-        endDate: data.endDate?.toISOString(),
-        projectId: pathname.split("/")[2],
-      };
-      res = await fetch("/api/tasks", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
+      createTask.mutate({
+        ...body,
+        projectId: projectId!,
+        organizationId: orgId!,
       });
-    } else {
-      body = {
-        ...data,
-        startDate: data.startDate?.toISOString(),
-        endDate: data.endDate?.toISOString(),
-        id: task?.id,
-      };
-      res = await fetch("/api/tasks", {
-        method: "PUT",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
+    } else if (mode === "edit" && task) {
+      updateTask.mutate({
+        ...body,
+        id: task.id,
       });
     }
 
-    if (res.ok) {
-      toast({
-        description: content!.toastDescription,
-      });
-      setToggle!(false);
-      form.reset();
-      router.refresh();
-    }
     setIsDisabled(false);
   }
 
@@ -174,7 +215,6 @@ export default function TaskForm({
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                        disabled={(date) => date > new Date("2025-01-01")}
                         initialFocus
                       />
                     </PopoverContent>
@@ -215,7 +255,9 @@ export default function TaskForm({
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                        disabled={(date) => date > new Date("2025-01-01")}
+                        disabled={(date) =>
+                          date < new Date(form.getValues("startDate"))
+                        }
                         initialFocus
                       />
                     </PopoverContent>

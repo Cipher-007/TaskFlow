@@ -1,29 +1,23 @@
-import { ThemeProvider } from "@/components/theme-provider";
-import { getUserFromCookie } from "@/lib/auth";
-import { db } from "@/lib/db";
-import "@/styles/globals.css";
-import { Theme } from "@prisma/client";
-import { cookies } from "next/headers";
+import { ThemeProvider } from "~/components/theme-provider";
+import { auth } from "~/server/auth";
+import "~/styles/globals.css";
+import { TRPCReactProvider } from "~/trpc/react";
+import { api } from "~/trpc/server";
+
+type Theme = "dark" | "light";
 
 export default async function DashboardRootlayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getUserFromCookie(cookies());
+  const session = await auth();
 
   let theme: Theme = "dark";
 
-  if (user) {
-    const data = await db.user.findUnique({
-      where: {
-        id: user?.id,
-      },
-      select: {
-        theme: true,
-      },
-    });
-    theme = data?.theme!;
+  if (session) {
+    const user = await api.user.getCurrentUserInfo.query();
+    theme = user?.theme ?? "dark";
   }
 
   return (
@@ -35,7 +29,7 @@ export default async function DashboardRootlayout({
           defaultTheme={theme}
           disableTransitionOnChange
         >
-          {children}
+          <TRPCReactProvider>{children}</TRPCReactProvider>
         </ThemeProvider>
       </body>
     </html>
