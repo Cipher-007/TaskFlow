@@ -22,7 +22,7 @@ export const requestsRouter = createTRPCRouter({
   updateRequest: protectedProcedure
     .input(
       z.object({
-        userId: z.string().nonempty(),
+        userId: z.string().min(1),
         teamId: z.string().optional(),
         status: z.enum(["APPROVED", "REJECTED", "PENDING"]),
       }),

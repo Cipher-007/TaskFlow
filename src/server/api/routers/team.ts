@@ -49,7 +49,7 @@ export const teamRouter = createTRPCRouter({
       z.array(
         z.object({
           teamId: z.string(),
-          userId: z.string().nonempty(),
+          userId: z.string().min(1),
           toggle: z.boolean(),
         }),
       ),
@@ -79,8 +79,8 @@ export const teamRouter = createTRPCRouter({
   create: protectedProcedure
     .input(
       z.object({
-        name: z.string().min(4).nonempty(),
-        description: z.string().min(4).nonempty(),
+        name: z.string().min(4).min(1),
+        description: z.string().min(4).min(1),
         organizationId: z.string(),
       }),
     )

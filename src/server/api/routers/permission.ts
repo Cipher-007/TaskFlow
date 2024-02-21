@@ -16,7 +16,7 @@ export const permissionRouter = createTRPCRouter({
   createProjectPermission: protectedProcedure
     .input(
       z.object({
-        userId: z.string().nonempty(),
+        userId: z.string().min(1),
         projectId: z.string(),
         permissions: permissionsType,
       }),
@@ -32,7 +32,7 @@ export const permissionRouter = createTRPCRouter({
   createTaskPermission: protectedProcedure
     .input(
       z.object({
-        userId: z.string().nonempty(),
+        userId: z.string().min(1),
         taskId: z.string(),
         permissions: permissionsType,
       }),
@@ -48,7 +48,7 @@ export const permissionRouter = createTRPCRouter({
   createPermission: protectedProcedure
     .input(
       z.object({
-        userId: z.string().nonempty(),
+        userId: z.string().min(1),
         commentId: z.string(),
         permissions: permissionsType,
       }),

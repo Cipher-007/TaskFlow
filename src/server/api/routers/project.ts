@@ -135,7 +135,7 @@ export const projectRouter = createTRPCRouter({
         members: z
           .array(
             z.object({
-              id: z.string().nonempty(),
+              id: z.string().min(1),
               type: permissionsType,
             }),
           )

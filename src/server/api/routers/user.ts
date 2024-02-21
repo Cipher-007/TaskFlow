@@ -157,7 +157,7 @@ export const userRouter = createTRPCRouter({
   update: protectedProcedure
     .input(
       z.object({
-        id: z.string().nonempty(),
+        id: z.string().min(1),
         name: z.string().optional(),
         email: z.string().optional(),
         teamId: z.string().optional(),
@@ -197,7 +197,7 @@ export const userRouter = createTRPCRouter({
   updateTeams: protectedProcedure
     .input(
       z.object({
-        id: z.string().nonempty(),
+        id: z.string().min(1),
         teams: z.array(
           z.object({
             id: z.string(),
@@ -232,7 +232,7 @@ export const userRouter = createTRPCRouter({
     }),
 
   delete: protectedProcedure
-    .input(z.object({ id: z.string().nonempty() }))
+    .input(z.object({ id: z.string().min(1) }))
     .mutation(({ ctx, input }) => {
       return ctx.db.delete(users).where(eq(users.id, input.id));
     }),
