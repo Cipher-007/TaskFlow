@@ -16,7 +16,7 @@ export default async function DashboardRootlayout({
   let theme: Theme = "dark";
 
   if (session) {
-    const user = await api.user.getCurrentUserInfo.query();
+    const user = await api.user.getUserTheme.query();
     theme = user?.theme ?? "dark";
   }
 
