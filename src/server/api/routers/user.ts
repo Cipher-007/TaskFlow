@@ -52,6 +52,13 @@ export const userRouter = createTRPCRouter({
     });
   }),
 
+  getUserTheme: protectedProcedure.query(({ ctx }) => {
+    return ctx.db.query.users.findFirst({
+      where: eq(users.id, ctx.session.user.id),
+      columns: { theme: true },
+    });
+  }),
+
   getApprovedEmployees: protectedProcedure
     .input(z.object({ organizationId: z.string() }))
     .query(({ ctx, input }) => {
