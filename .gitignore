@@ -25,7 +25,11 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env*
+# do not commit any .env files to git, except for the .env.example file
+.env
+.env.staging
+.env.production
+.env*.local
 
 # vercel
 .vercel
@@ -33,3 +37,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.vscode
