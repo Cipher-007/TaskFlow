@@ -2,7 +2,7 @@ import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import type { DefaultSession, NextAuthConfig } from "next-auth";
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
-import { env } from "~/env";
+// import { env } from "~/env";
 import { db } from "~/server/db";
 import { pgTable } from "~/server/db/schema";
 
@@ -59,7 +59,7 @@ export const authOptions = {
     newUser: "/onboarding", // New users will be directed here on first sign in
   },
   // debug: true,
-  redirectProxyUrl: env.AUTH_REDIRECT_PROXY_URL,
+  // redirectProxyUrl: env.AUTH_REDIRECT_PROXY_URL,
 } satisfies NextAuthConfig;
 
 export const {
