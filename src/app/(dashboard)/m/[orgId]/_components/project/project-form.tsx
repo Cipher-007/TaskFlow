@@ -1,6 +1,3 @@
-import { Input } from "~/components/ui/input";
-import { cn, formatDate } from "~/lib/utils";
-import { api } from "~/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
@@ -8,6 +5,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "~/components/ui/button";
+import Calendar from "~/components/ui/calendar";
 import {
   Form,
   FormControl,
@@ -16,6 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
+import { Input } from "~/components/ui/input";
 import {
   Popover,
   PopoverContent,
@@ -30,8 +29,9 @@ import {
 } from "~/components/ui/select";
 import { Textarea } from "~/components/ui/textarea";
 import { useToast } from "~/components/ui/use-toast";
+import { cn, formatDate } from "~/lib/utils";
 import { type Project } from "~/server/db/schema";
-import Calendar from "~/components/ui/calendar";
+import { api } from "~/trpc/react";
 
 const projectFormSchema = z.object({
   name: z

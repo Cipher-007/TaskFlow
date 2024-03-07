@@ -1,5 +1,5 @@
-import { api } from "~/trpc/server";
 import Link from "next/link";
+import { api } from "~/trpc/server";
 import Greetings from "./_components/greetings";
 import TeamCard from "./admin/_components/teams/team-card";
 

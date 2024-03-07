@@ -1,8 +1,8 @@
 "use client";
 
-import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
 import { Button } from "~/components/ui/button";
+import { api } from "~/trpc/react";
 
 export default function RejectButton({ userId }: { userId: string }) {
   const router = useRouter();

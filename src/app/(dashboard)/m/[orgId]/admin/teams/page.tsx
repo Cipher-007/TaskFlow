@@ -1,5 +1,5 @@
-import { api } from "~/trpc/server";
 import { redirect } from "next/navigation";
+import { api } from "~/trpc/server";
 import ListTeam from "../_components/teams/list-team";
 import NewTeam from "../_components/teams/new-team";
 

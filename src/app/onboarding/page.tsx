@@ -1,6 +1,6 @@
-import { api } from "~/trpc/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { api } from "~/trpc/server";
 import IndividualRegistrationForm from "./_components/individual-registration-form";
 
 export const metadata = {

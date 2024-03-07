@@ -1,6 +1,5 @@
 "use client";
 
-import { api } from "~/trpc/react";
 import clsx from "clsx";
 import {
   CalendarDays,
@@ -11,10 +10,11 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { api } from "~/trpc/react";
 import { Card } from "./ui/card";
 import UserAvatar from "./user/user-avatar";
 
-export default function Sidebar() {
+export default function BottomNav() {
   const pathname = usePathname();
 
   const orgId = pathname.split("/")[2];

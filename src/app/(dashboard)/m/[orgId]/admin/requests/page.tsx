@@ -1,5 +1,5 @@
-import { api } from "~/trpc/server";
 import { redirect } from "next/navigation";
+import { api } from "~/trpc/server";
 import ListRequests from "../_components/request/list-requests";
 
 export const metadata = {

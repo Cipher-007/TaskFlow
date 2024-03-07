@@ -1,10 +1,10 @@
-import { type Team } from "~/server/db/schema";
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
+import { type Team } from "~/server/db/schema";
 
 export default function TeamCard({ team }: { team: Team }) {
   return (

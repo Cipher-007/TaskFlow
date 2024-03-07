@@ -1,6 +1,6 @@
-import { api } from "~/trpc/server";
 import { redirect } from "next/navigation";
 import { auth } from "~/server/auth";
+import { api } from "~/trpc/server";
 
 export default async function page() {
   const session = await auth();

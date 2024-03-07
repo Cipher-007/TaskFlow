@@ -1,4 +1,3 @@
-import { api } from "~/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -16,6 +15,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { useToast } from "~/components/ui/use-toast";
 import type { Team } from "~/server/db/schema";
+import { api } from "~/trpc/react";
 
 const teamFormSchema = z.object({
   name: z.string().min(4, {

@@ -1,11 +1,6 @@
-import Navbar from "~/components/navbar";
 import Image from "next/image";
 import Link from "next/link";
-
-export const metadata = {
-  title: "Projectverse",
-  description: "One app to replace them all.",
-};
+import Navbar from "~/components/navbar";
 
 export default async function Home() {
   return (

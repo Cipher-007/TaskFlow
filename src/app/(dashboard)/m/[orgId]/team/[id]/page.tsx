@@ -1,7 +1,7 @@
 import { Separator } from "~/components/ui/separator";
 import { api } from "~/trpc/server";
-import EditTeam from "../_components/edit-team";
 import ListMembers from "../../_components/member/list-members";
+import EditTeam from "../_components/edit-team";
 
 export default async function TeamPage({
   params,
