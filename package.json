@@ -11,7 +11,9 @@
     "dev": "next dev --turbo",
     "lint": "next lint",
     "start": "next start",
-    "analyze": "ANALYZE=true next build"
+    "analyze": "ANALYZE=true next build",
+    "format": "prettier --check --ignore-path .gitignore .",
+    "format:fix": "prettier --write --ignore-path .gitignore ."
   },
   "dependencies": {
     "@auth/core": "^0.27.0",
