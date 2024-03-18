@@ -153,12 +153,15 @@ export const userRouter = createTRPCRouter({
       }),
     )
     .mutation(({ ctx, input }) => {
-      return ctx.db.update(users).set({
-        role: input.role,
-        globalRole: input.globalRole,
-        theme: input.theme,
-        onboarded: input.onboarded,
-      });
+      return ctx.db
+        .update(users)
+        .set({
+          role: input.role,
+          globalRole: input.globalRole,
+          theme: input.theme,
+          onboarded: input.onboarded,
+        })
+        .where(eq(users.id, ctx.session.user.id));
     }),
 
   update: protectedProcedure

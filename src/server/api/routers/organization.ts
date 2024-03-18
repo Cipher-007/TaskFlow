@@ -117,11 +117,14 @@ export const organizationRouter = createTRPCRouter({
           })
           .returning({ id: request.id });
 
-        await trx.update(users).set({
-          organizationId: org[0]!.id,
-          globalRole: "ADMIN",
-          requestId: approved[0]!.id,
-        });
+        await trx
+          .update(users)
+          .set({
+            organizationId: org[0]!.id,
+            globalRole: "ADMIN",
+            requestId: approved[0]!.id,
+          })
+          .where(eq(users.id, ctx.session.user.id));
 
         await trx.insert(userToTeam).values({
           teamId: defaultTeam[0]!.id,
