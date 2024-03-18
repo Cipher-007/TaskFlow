@@ -2,7 +2,7 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "~/components/theme-provider";
 import { auth } from "~/server/auth";
 import "~/styles/globals.css";
-import { TRPCReactProvider } from "~/trpc/react";
+import { SessionProvider, TRPCReactProvider } from "~/trpc/react";
 import { api } from "~/trpc/server";
 
 const inter = Inter({
@@ -38,13 +38,15 @@ export default async function DashboardRootlayout({
       <body
         className={`h-full w-full bg-gradient-to-b from-black to-blue-900 font-sans ${inter.variable}`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme={theme}
-          disableTransitionOnChange
-        >
-          <TRPCReactProvider>{children}</TRPCReactProvider>
-        </ThemeProvider>
+        <SessionProvider session={session}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme={theme}
+            disableTransitionOnChange
+          >
+            <TRPCReactProvider>{children}</TRPCReactProvider>
+          </ThemeProvider>
+        </SessionProvider>
       </body>
     </html>
   );
