@@ -2,7 +2,6 @@ import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import type { DefaultSession, NextAuthConfig } from "next-auth";
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
-// import { env } from "~/env";
 import { db } from "~/server/db";
 import { pgTable } from "~/server/db/schema";
 
@@ -51,6 +50,8 @@ export const authOptions = {
       },
     }),
   },
+  // uncomment below for local builds
+  // trustHost: true,
   adapter: DrizzleAdapter(db, pgTable),
   providers: [GitHub],
   pages: {
