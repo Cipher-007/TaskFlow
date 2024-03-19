@@ -15,23 +15,27 @@ import { Switch } from "~/components/ui/switch";
 import { api } from "~/trpc/react";
 
 const FormSchema = z.object({
-  users: z.array(
-    z.object({
-      id: z.string(),
-      name: z.string(),
-      toggle: z.boolean(),
-    }),
-  ),
+  users: z
+    .array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        toggle: z.boolean(),
+      }),
+    )
+    .optional(),
 });
 
 type FormValue = z.infer<typeof FormSchema>;
 
 type Props = {
-  data: {
-    id: string;
-    name: string;
-    teamId: string;
-  }[];
+  data:
+    | {
+        id: string;
+        name: string;
+        teamId: string;
+      }[]
+    | undefined;
   setToggle: (toggle: boolean) => void;
 };
 
@@ -47,7 +51,7 @@ export default function AddMember({ data, setToggle }: Props) {
   });
 
   const defaultValues: FormValue = {
-    users: data.map((employee) => ({
+    users: data?.map((employee) => ({
       id: employee.id,
       name: employee.name,
       toggle: employee.teamId === teamId,
@@ -68,7 +72,7 @@ export default function AddMember({ data, setToggle }: Props) {
   function onSubmit(data: FormValue) {
     setDisabled(true);
     updateUser.mutate(
-      data.users.map((user) => ({
+      (data.users ?? []).map((user) => ({
         userId: user.id,
         toggle: user.toggle,
         teamId: teamId!,
