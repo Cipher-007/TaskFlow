@@ -1,8 +1,9 @@
+import SessionProvider from "~/components/session-provider";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "~/components/theme-provider";
 import { auth } from "~/server/auth";
 import "~/styles/globals.css";
-import { SessionProvider, TRPCReactProvider } from "~/trpc/react";
+import { TRPCReactProvider } from "~/trpc/react";
 import { api } from "~/trpc/server";
 
 const inter = Inter({
@@ -18,7 +19,7 @@ export const metadata = {
 
 type Theme = "dark" | "light";
 
-export default async function DashboardRootlayout({
+export default async function Rootlayout({
   children,
 }: {
   children: React.ReactNode;
