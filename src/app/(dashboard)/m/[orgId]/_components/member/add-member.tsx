@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "~/components/ui/button";
@@ -40,7 +39,6 @@ type Props = {
 };
 
 export default function AddMember({ data, setToggle }: Props) {
-  const [disabled, setDisabled] = useState(false);
   const router = useRouter();
   const teamId = usePathname().split("/")[4];
   const updateUser = api.team.updateManyUsers.useMutation({
@@ -70,7 +68,6 @@ export default function AddMember({ data, setToggle }: Props) {
   });
 
   function onSubmit(data: FormValue) {
-    setDisabled(true);
     updateUser.mutate(
       (data.users ?? []).map((user) => ({
         userId: user.id,
@@ -78,7 +75,6 @@ export default function AddMember({ data, setToggle }: Props) {
         teamId: teamId!,
       })),
     );
-    setDisabled(false);
   }
 
   return (
@@ -110,8 +106,12 @@ export default function AddMember({ data, setToggle }: Props) {
             )}
           />
         ))}
-        <Button type="submit" disabled={disabled} className="w-1/4 self-center">
-          Submit
+        <Button
+          type="submit"
+          disabled={updateUser.isPending}
+          className="w-1/4 self-center"
+        >
+          {updateUser.isPending ? "Submitting..." : "Submit"}
         </Button>
       </form>
     </Form>

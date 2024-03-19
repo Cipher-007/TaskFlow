@@ -12,7 +12,7 @@ import { Separator } from "~/components/ui/separator";
 import { type Project } from "~/server/db/schema";
 
 export default async function SingleProject({ project }: { project: Project }) {
-  const { completed, total } = await api.task.getCountByProject.query({
+  const { completed, total } = await api.task.getCountByProject({
     projectId: project.id,
   });
 

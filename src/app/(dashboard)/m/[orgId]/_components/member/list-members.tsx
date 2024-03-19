@@ -4,9 +4,9 @@ import Member from "./member";
 import NewMember from "./new-member";
 
 export default async function ListMembers({ show = false }: { show: boolean }) {
-  const user = await api.user.getCurrentUserInfo.query();
+  const user = await api.user.getCurrentUserInfo();
   if (user?.organizationId) {
-    const members = await api.user.getApprovedEmployees.query({
+    const members = await api.user.getApprovedEmployees({
       organizationId: user.organizationId,
     });
 

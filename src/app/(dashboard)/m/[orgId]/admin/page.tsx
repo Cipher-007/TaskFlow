@@ -8,7 +8,7 @@ export const metadata = {
 };
 
 export default async function AdminPage() {
-  const access = await api.user.isApproved.query();
+  const access = await api.user.isApproved();
 
   if (access) {
     return <ListMembers show={false} />;

@@ -17,7 +17,7 @@ export default async function AdminLayout({
   children,
   params,
 }: AdminLayoutProps) {
-  const user = await api.user.getCurrentUserInfo.query();
+  const user = await api.user.getCurrentUserInfo();
 
   let sidebarNavItems: { title: string; href: string }[] = [];
 

@@ -29,7 +29,7 @@ export default async function Rootlayout({
   let theme: Theme = "dark";
 
   if (session) {
-    const user = await api.user.getUserTheme.query();
+    const user = await api.user.getUserTheme();
     theme = user?.theme ?? "dark";
   }
 

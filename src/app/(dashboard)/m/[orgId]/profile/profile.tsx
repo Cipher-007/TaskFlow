@@ -7,7 +7,7 @@ import { signOut } from "~/server/auth";
 import { api } from "~/trpc/server";
 
 export default async function Profile() {
-  const userData = await api.user.getCurrentUserInfo.query();
+  const userData = await api.user.getCurrentUserInfo();
 
   return (
     <Card className="w-1/2">

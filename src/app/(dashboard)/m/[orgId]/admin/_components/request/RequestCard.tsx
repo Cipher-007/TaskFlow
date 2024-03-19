@@ -16,7 +16,7 @@ export default async function RequestCard({
   request: Request & { user: Users };
 }) {
   const { name, email } = request.user;
-  const teams = await api.team.getAll.query(request.organizationId);
+  const teams = await api.team.getAll(request.organizationId);
   return (
     <Card>
       <CardHeader>

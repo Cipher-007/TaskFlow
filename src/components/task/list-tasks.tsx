@@ -14,7 +14,7 @@ export default async function ListTasks({ tasks, teamId }: TaskCardProps) {
   if (tasks) {
     data = tasks;
   } else {
-    data = await api.task.getAll.query();
+    data = await api.task.getAll();
   }
 
   const Status = [

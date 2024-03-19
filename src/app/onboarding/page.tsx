@@ -11,13 +11,13 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function OnBoardingPage() {
-  const onBoarded = await api.user.isOnboarded.query();
+  const onBoarded = await api.user.isOnboarded();
 
   if (onBoarded) {
     redirect("/m");
   }
 
-  const orgs = await api.organization.getAll.query();
+  const orgs = await api.organization.getAll();
 
   if (orgs.length === 0) {
     redirect("/onboarding/organization");

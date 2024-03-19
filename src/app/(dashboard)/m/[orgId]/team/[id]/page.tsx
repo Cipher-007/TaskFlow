@@ -10,7 +10,7 @@ export default async function TeamPage({
     id: string;
   };
 }) {
-  const team = await api.team.getById.query({
+  const team = await api.team.getById({
     id: params.id,
   });
 

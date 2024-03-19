@@ -8,7 +8,7 @@ export const metadata = {
 };
 
 export default async function UsersPage() {
-  const user = await api.user.getCurrentUserInfo.query();
+  const user = await api.user.getCurrentUserInfo();
 
   if (user && (user.globalRole == "ADMIN" || user.role === "TEAM_LEAD")) {
     return (
