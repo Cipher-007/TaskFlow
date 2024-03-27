@@ -60,7 +60,9 @@ export const users = pgTable("user", {
   createdAt: timestamp("created_at")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  updatedAt: timestamp("updatedAt"),
+  updatedAt: timestamp("updated_at", { mode: "date", precision: 3 }).$onUpdate(
+    () => new Date(),
+  ),
   name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull(),
   emailVerified: timestamp("emailVerified", {
@@ -161,7 +163,10 @@ export const organization = pgTable(
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    updatedAt: timestamp("updatedAt"),
+    updatedAt: timestamp("updated_at", {
+      mode: "date",
+      precision: 3,
+    }).$onUpdate(() => new Date()),
     name: varchar("name", { length: 255 }).notNull(),
     email: varchar("email", { length: 255 }).notNull(),
   },
@@ -188,7 +193,10 @@ export const team = pgTable(
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    updatedAt: timestamp("updatedAt"),
+    updatedAt: timestamp("updated_at", {
+      mode: "date",
+      precision: 3,
+    }).$onUpdate(() => new Date()),
     name: varchar("name", { length: 255 }).notNull(),
     description: text("description").notNull(),
     organizationId: uuid("organization_id")
@@ -237,7 +245,10 @@ export const project = pgTable(
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    updatedAt: timestamp("updatedAt"),
+    updatedAt: timestamp("updated_at", {
+      mode: "date",
+      precision: 3,
+    }).$onUpdate(() => new Date()),
     name: varchar("name", { length: 255 }).notNull(),
     description: text("description").notNull(),
     priority: priority("priority").default("NORMAL").notNull(),
@@ -274,7 +285,9 @@ export const task = pgTable("task", {
   createdAt: timestamp("created_at")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  updatedAt: timestamp("updatedAt"),
+  updatedAt: timestamp("updated_at", { mode: "date", precision: 3 }).$onUpdate(
+    () => new Date(),
+  ),
   name: varchar("name", { length: 255 }).notNull(),
   description: text("description").notNull(),
   startDate: timestamp("startDate").notNull(),
@@ -309,7 +322,10 @@ export const comment = pgTable(
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    updatedAt: timestamp("updatedAt"),
+    updatedAt: timestamp("updated_at", {
+      mode: "date",
+      precision: 3,
+    }).$onUpdate(() => new Date()),
     projectId: uuid("project_id").notNull(),
     userId: varchar("createdById", { length: 255 })
       .notNull()
@@ -377,7 +393,10 @@ export const request = pgTable(
   {
     id: uuid("id").defaultRandom().primaryKey(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updatedAt"),
+    updatedAt: timestamp("updated_at", {
+      mode: "date",
+      precision: 3,
+    }).$onUpdate(() => new Date()),
     organizationId: uuid("organization_id")
       .notNull()
       .references(() => organization.id, { onDelete: "cascade" }),
