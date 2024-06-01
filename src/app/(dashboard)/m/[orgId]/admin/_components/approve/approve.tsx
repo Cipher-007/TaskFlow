@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import ApproveForm from "./approve-form";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
@@ -11,6 +10,7 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 import type { Team } from "~/server/db/schema";
+import ApproveForm from "./approve-form";
 
 export default function Approve({
   teams,

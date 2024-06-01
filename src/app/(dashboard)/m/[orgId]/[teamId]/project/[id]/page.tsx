@@ -22,7 +22,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const id = params.id;
 
-  const data = await api.project.getById.query({ id: id });
+  const data = await api.project.getById({ id: id });
 
   return {
     title: data?.name,
@@ -31,11 +31,11 @@ export async function generateMetadata({
 }
 
 export default async function ProjectPage({ params }: ProjectPageParams) {
-  const access = await api.user.isApproved.query();
+  const access = await api.user.isApproved();
 
   if (access) {
-    const project = await api.project.getById.query({ id: params.id });
-    const tasksdata = await api.task.getAllByProject.query({
+    const project = await api.project.getById({ id: params.id });
+    const tasksdata = await api.task.getAllByProject({
       projectId: params.id,
     });
 

@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -14,7 +15,6 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { useToast } from "~/components/ui/use-toast";
-import { z } from "zod";
 import { api } from "~/trpc/react";
 
 const organizationSchema = z.object({

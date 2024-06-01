@@ -9,8 +9,8 @@ export const metadata = {
 };
 
 export default async function page() {
-  const projects = await api.project.getAll.query();
-  const admin = await api.user.isAdmin.query();
+  const projects = await api.project.getAll();
+  const admin = await api.user.isAdmin();
 
   return (
     <div className="flex h-full w-full flex-col justify-between rounded-md bg-white dark:bg-black">

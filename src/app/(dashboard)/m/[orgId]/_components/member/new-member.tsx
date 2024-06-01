@@ -14,6 +14,7 @@ import {
 } from "~/components/ui/dialog";
 import { api } from "~/trpc/react";
 import AddMember from "./add-member";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 export default function NewMember() {
   const [open, setOpen] = useState(false);
@@ -23,7 +24,13 @@ export default function NewMember() {
     api.organization.getApprovedEmployees.useQuery(orgId!);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center pt-4 transition-all duration-200 ease-in-out hover:scale-105">
+        <Button disabled>
+          <ReloadIcon className="mx-2 h-4 w-4 animate-spin" />
+        </Button>
+      </div>
+    );
   }
 
   if (error) {

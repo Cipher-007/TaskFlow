@@ -7,7 +7,7 @@ export const metadata = {
 };
 
 export default async function CalendarPage() {
-  const access = await api.user.isApproved.query();
+  const access = await api.user.isApproved();
 
   if (!access) {
     return <AccessDeniedComponent />;

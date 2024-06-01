@@ -9,7 +9,7 @@ export default async function page({
 }: {
   params: { orgId: string; teamId: string };
 }) {
-  const projects = await api.project.getAllByTeam.query({
+  const projects = await api.project.getAllByTeam({
     teamId: params.teamId,
   });
 

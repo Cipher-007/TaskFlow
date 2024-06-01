@@ -1,10 +1,10 @@
-import { api } from "~/trpc/server";
 import Link from "next/link";
+import { api } from "~/trpc/server";
 import Greetings from "./_components/greetings";
 import TeamCard from "./admin/_components/teams/team-card";
 
 export default async function page({ params }: { params: { orgId: string } }) {
-  const teams = await api.user.getAllTeams.query();
+  const teams = await api.user.getAllTeams();
 
   return (
     <div className="w-full">

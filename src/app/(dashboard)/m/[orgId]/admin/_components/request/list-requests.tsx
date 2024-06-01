@@ -2,10 +2,10 @@ import { api } from "~/trpc/server";
 import RequestCard from "./RequestCard";
 
 export default async function ListRequests() {
-  const user = await api.user.getCurrentUserInfo.query();
+  const user = await api.user.getCurrentUserInfo();
 
   if (user?.organizationId) {
-    const requests = await api.requests.getAllRequests.query({
+    const requests = await api.requests.getAllRequests({
       organizationId: user.organizationId,
     });
     return (

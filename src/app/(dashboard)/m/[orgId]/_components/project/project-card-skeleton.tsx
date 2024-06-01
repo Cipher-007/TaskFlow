@@ -21,7 +21,7 @@ export default function ProjectCardSkeleton() {
             <div className="h-full rounded-full bg-gray-300"></div>
           </div>
           <CardFooter className="flex-row-reverse pr-0 pt-3">
-            <div className=" my-2 ml-auto mr-0 h-2 w-[5%] rounded-full bg-gray-300"></div>
+            <div className="my-2 ml-auto mr-0 h-2 w-[5%] rounded-full bg-gray-300"></div>
           </CardFooter>
         </div>
       </CardContent>

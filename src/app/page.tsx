@@ -1,11 +1,6 @@
-import Navbar from "~/components/navbar";
 import Image from "next/image";
 import Link from "next/link";
-
-export const metadata = {
-  title: "Projectverse",
-  description: "One app to replace them all.",
-};
+import Navbar from "~/components/navbar";
 
 export default async function Home() {
   return (
@@ -31,7 +26,7 @@ export default async function Home() {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className=" mb-2 text-2xl text-white"
+              className="mb-2 text-2xl text-white"
             >
               <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
             </svg>
@@ -53,7 +48,7 @@ export default async function Home() {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className=" mb-2 text-2xl text-white"
+              className="mb-2 text-2xl text-white"
             >
               <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
               <line x1="16" x2="16" y1="2" y2="6"></line>
@@ -78,7 +73,7 @@ export default async function Home() {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className=" mb-2 text-2xl text-white"
+              className="mb-2 text-2xl text-white"
             >
               <line x1="12" x2="12" y1="20" y2="10"></line>
               <line x1="18" x2="18" y1="20" y2="4"></line>

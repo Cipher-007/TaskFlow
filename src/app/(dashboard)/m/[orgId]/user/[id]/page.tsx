@@ -4,7 +4,7 @@ import { api } from "~/trpc/server";
 import EditUser from "../_components/edit-user";
 
 export default async function UserPage({ params }: { params: { id: string } }) {
-  const user = await api.user.getUserInfo.query(params.id);
+  const user = await api.user.getUserInfo(params.id);
 
   if (!user) {
     return (

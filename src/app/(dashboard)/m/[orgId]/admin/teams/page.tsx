@@ -1,5 +1,5 @@
-import { api } from "~/trpc/server";
 import { redirect } from "next/navigation";
+import { api } from "~/trpc/server";
 import ListTeam from "../_components/teams/list-team";
 import NewTeam from "../_components/teams/new-team";
 
@@ -9,14 +9,14 @@ export const metadata = {
 };
 
 export default async function TeamsPage() {
-  const user = await api.user.getCurrentUserInfo.query();
+  const user = await api.user.getCurrentUserInfo();
 
   if (
     user &&
     (user.globalRole == "ADMIN" || user.role === "TEAM_LEAD") &&
     user.organizationId
   ) {
-    const teams = await api.team.getAll.query(user.organizationId);
+    const teams = await api.team.getAll(user.organizationId);
     return (
       <div className="w-full">
         {teams.length > 0 ? (

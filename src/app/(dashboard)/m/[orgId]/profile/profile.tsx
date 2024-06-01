@@ -1,13 +1,13 @@
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { Separator } from "~/components/ui/separator";
 import { getInitials } from "~/lib/utils";
 import { signOut } from "~/server/auth";
 import { api } from "~/trpc/server";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { Button } from "~/components/ui/button";
-import { Separator } from "~/components/ui/separator";
 
 export default async function Profile() {
-  const userData = await api.user.getCurrentUserInfo.query();
+  const userData = await api.user.getCurrentUserInfo();
 
   return (
     <Card className="w-1/2">
@@ -31,7 +31,7 @@ export default async function Profile() {
         >
           <Button>Sign Out</Button>
         </form>
-        {/* 
+        {/*
         <div className="text-2xl font-medium">
           <div>Email: {userData?.email}</div>
           <div className="capitalize">Role: {userData?.role}</div>

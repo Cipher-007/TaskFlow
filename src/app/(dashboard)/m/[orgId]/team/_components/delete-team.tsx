@@ -1,8 +1,8 @@
 "use client";
 
-import { api } from "~/trpc/react";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "~/components/ui/button";
+import { api } from "~/trpc/react";
 
 export default function DeleteTeam() {
   const teamId = usePathname().split("/")[2];

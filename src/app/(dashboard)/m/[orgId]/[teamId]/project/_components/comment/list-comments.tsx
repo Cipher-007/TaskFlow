@@ -15,7 +15,7 @@ export default async function ListComment({
 }: {
   projectId: string;
 }) {
-  const comments = await api.commment.getByProjectId.query({ projectId });
+  const comments = await api.commment.getByProjectId({ projectId });
   return (
     <Card className="h-fit max-h-[57rem] w-1/5 overflow-y-auto">
       <CardHeader className="p-4">

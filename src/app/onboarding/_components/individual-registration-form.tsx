@@ -6,7 +6,6 @@ import { redirect, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "~/components/ui/button";
-import { api } from "~/trpc/react";
 import {
   Form,
   FormControl,
@@ -23,6 +22,7 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { useToast } from "~/components/ui/use-toast";
+import { api } from "~/trpc/react";
 
 const IndividualFormSchema = z.object({
   organizationId: z.string().min(1),
