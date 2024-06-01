@@ -116,11 +116,11 @@ export const userRouter = createTRPCRouter({
       columns: { onboarded: true },
     });
 
-    if (!access || !access.onboarded) {
-      return false;
+    if (access?.onboarded) {
+      return true;
     }
 
-    return true;
+    return false;
   }),
 
   updateTheme: protectedProcedure

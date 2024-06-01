@@ -4,7 +4,7 @@ const config = {
   parserOptions: {
     project: true,
   },
-  plugins: ["@typescript-eslint", "drizzle"],
+  plugins: ["@typescript-eslint", "drizzle", "eslint-plugin-react-compiler"],
   extends: [
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended-type-checked",
@@ -37,12 +37,13 @@ const config = {
     ],
     "drizzle/enforce-delete-with-where": [
       "error",
-      { drizzleObjectName: ["db", "trx"] },
+      { drizzleObjectName: ["db", "ctx.db"] },
     ],
     "drizzle/enforce-update-with-where": [
       "error",
-      { drizzleObjectName: ["db", "trx"] },
+      { drizzleObjectName: ["db", "ctx.db"] },
     ],
+    "react-compiler/react-compiler": "error",
   },
 };
 module.exports = config;
