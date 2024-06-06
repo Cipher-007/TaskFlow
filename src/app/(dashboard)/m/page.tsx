@@ -11,6 +11,9 @@ export default async function page() {
       redirect("/onboarding");
     } else {
       const org = await api.user.getUserOrganization();
+      if (org?.organizationId === null) {
+        redirect(`/onboarding/organization`);
+      }
       redirect(`/m/${org?.organizationId}`);
     }
   }
