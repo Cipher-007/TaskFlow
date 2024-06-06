@@ -18,7 +18,7 @@ import { useToast } from "~/components/ui/use-toast";
 import { api } from "~/trpc/react";
 
 const organizationSchema = z.object({
-  organizationName: z.string().min(2, {
+  organizationName: z.string().min(4, {
     message: "Organization name must be at least 2 characters long",
   }),
   organizationEmail: z.string().email({

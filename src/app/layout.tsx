@@ -1,4 +1,4 @@
-import SessionProvider from "~/components/session-provider";
+import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "~/components/theme-provider";
 import { auth } from "~/server/auth";
