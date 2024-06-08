@@ -46,7 +46,9 @@ export const authOptions = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith("/m");
+      const isOnDashboard =
+        nextUrl.pathname.startsWith("/m") ||
+        nextUrl.pathname.startsWith("/onboarding");
       if (isOnDashboard) {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page
