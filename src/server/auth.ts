@@ -1,7 +1,7 @@
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import type { DefaultSession, NextAuthConfig } from "next-auth";
 import NextAuth from "next-auth";
-import GitHub from "next-auth/providers/github";
+import Github from "next-auth/providers/github";
 import { db } from "~/server/db";
 import { pgTable } from "~/server/db/schema";
 
@@ -34,31 +34,43 @@ declare module "next-auth" {
  */
 export const authOptions = {
   session: {
-    strategy: "database",
+    strategy: "jwt",
   },
-  callbacks: {
-    authorized({ auth }) {
-      if (auth) {
-        return true;
-      }
-    },
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
-  },
-  // uncomment below for local builds
-  // trustHost: true,
   adapter: DrizzleAdapter(db, pgTable),
-  providers: [GitHub],
+  providers: [Github],
   pages: {
     signIn: "/auth/signin",
     signOut: "/auth/signout",
     newUser: "/onboarding", // New users will be directed here on first sign in
   },
+  callbacks: {
+    authorized({ auth, request: { nextUrl } }) {
+      const isLoggedIn = !!auth?.user;
+      const isOnDashboard = nextUrl.pathname.startsWith("/m");
+      if (isOnDashboard) {
+        if (isLoggedIn) return true;
+        return false; // Redirect unauthenticated users to login page
+      } else if (isLoggedIn) {
+        return Response.redirect(new URL("/m", nextUrl));
+      }
+      return true;
+    },
+    jwt: ({ token, user }) => {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    session: ({ session, token }) => ({
+      ...session,
+      user: {
+        ...session.user,
+        id: token.sub,
+      },
+    }),
+  },
+  // uncomment below for local builds
+  // trustHost: true,
   // debug: true,
   // redirectProxyUrl: env.AUTH_REDIRECT_PROXY_URL,
 } satisfies NextAuthConfig;
