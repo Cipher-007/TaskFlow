@@ -16,7 +16,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@auth/core": "^0.28.1",
     "@auth/drizzle-adapter": "0.8.1",
     "@hookform/resolvers": "^3.3.4",
     "@neondatabase/serverless": "^0.9.3",
@@ -50,7 +49,7 @@
     "eslint-plugin-react-compiler": "0.0.0-experimental-c8b3f72-20240517",
     "lucide-react": "^0.302.0",
     "next": "14.2.3",
-    "next-auth": "5.0.0-beta.16",
+    "next-auth": "5.0.0-beta.17",
     "next-themes": "^0.3.0",
     "react": "18.3.1",
     "react-day-picker": "^8.10.0",
