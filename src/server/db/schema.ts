@@ -260,7 +260,7 @@ export const comment = pgTable(
       precision: 3,
     }).$onUpdate(() => new Date()),
     projectId: uuid("project_id").notNull(),
-    userId: varchar("createdById", { length: 255 })
+    userId: varchar("created_by_id", { length: 255 })
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     content: text("content").notNull(),
@@ -286,7 +286,7 @@ export const permission = pgTable(
   {
     id: uuid("id").defaultRandom().primaryKey(),
     type: permissionType("type").default("NONE").notNull(),
-    userId: varchar("createdById", { length: 255 })
+    userId: varchar("created_by_id", { length: 255 })
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     projectId: uuid("project_id").references(() => project.id, {
@@ -333,7 +333,7 @@ export const request = pgTable(
     organizationId: uuid("organization_id")
       .notNull()
       .references(() => organization.id, { onDelete: "cascade" }),
-    userId: varchar("createdById", { length: 255 })
+    userId: varchar("created_by_id", { length: 255 })
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     status: requestStatus("status").default("PENDING").notNull(),
