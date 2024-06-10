@@ -15,7 +15,7 @@ export default async function CalendarPage() {
 
   return (
     <div className="flex h-full w-full items-center justify-center text-3xl font-medium">
-      <div>Cooming soon...</div>
+      <div>Coming soon...</div>
     </div>
   );
 }
